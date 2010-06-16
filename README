@@ -1,0 +1,7 @@
+jMXPlayer, a GUI to IEEE PAR1599 (MX) data
+Copyright © 2010 Riccardo Attilio Galli <riccardo@sideralis.org>
+
+REQUIREMENTS:
+    java >=1.5  (http://java.sun.com/)
+    jmf >=2.1.1 (http://java.sun.com/javase/technologies/desktop/media/jmf/)
+    swing-layout (https://swing-layout.dev.java.net/)
