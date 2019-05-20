@@ -22,7 +22,7 @@
  * Created on February 2, 2003, 9:51 PM
  */
 
-package mainFrame;
+package src.Component;
 
 import java.awt.*;
 import java.awt.image.*;

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mainFrame;
+package src.Component;
 
 import java.awt.*;
 import java.awt.event.*;

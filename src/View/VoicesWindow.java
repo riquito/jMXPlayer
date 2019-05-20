@@ -18,11 +18,14 @@
 
 
 
-package mainFrame;
+package src.View;
 
 import java.awt.GridLayout;
 import java.lang.reflect.Array;
 import java.util.Hashtable;
+
+import src.Component.VoicesPanel;
+import src.Model.Voice;
 
 /**
  *

@@ -16,12 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mainFrame;
+package src.Controller;
 
 import java.io.File;
 import java.util.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
+
+import src.Model.Coord;
+import src.Model.MXData;
+import src.Model.Voice;
 
 
 public class MXHandler extends DefaultHandler {

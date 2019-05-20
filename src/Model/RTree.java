@@ -17,13 +17,13 @@
  */
 
 
-package mainFrame;
+package src.Model;
 
 import java.util.ArrayList;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 
-class RTree{
+public class RTree{
     protected int capacity;
     
     protected Node root;

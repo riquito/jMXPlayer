@@ -16,15 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mainFrame;
+package src.Model;
 
 import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import src.Util.Tools;
+
 import java.util.Collections;
 
-
-class MXData implements Serializable{
+public class MXData implements Serializable{
     public String work_title;
     public String movement_title;
     public String author;

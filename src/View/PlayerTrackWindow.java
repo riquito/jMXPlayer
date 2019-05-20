@@ -23,7 +23,7 @@
  *
  */
 
-package mainFrame;
+package src.View;
 
 import javax.media.Player;
 import javax.swing.ButtonModel;

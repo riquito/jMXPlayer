@@ -25,7 +25,7 @@
  *
  */
 
-package mainFrame;
+package src.Component;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,6 +34,9 @@ import java.util.Hashtable;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+
+import src.Model.Coord;
+import src.Model.Voice;
 
 /**
  *

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mainFrame;
+package src.Model;
 import java.awt.Rectangle;
 
 

@@ -17,7 +17,7 @@
  */
 
 
-package mainFrame;
+package src.Util;
 
 import java.io.File;
 
@@ -36,7 +36,7 @@ public class Tools {
      *  as needed
      * 
      */
-    static String joinPath(String basename, String filename) {
+    public static String joinPath(String basename, String filename) {
         if (basename.endsWith("/")||basename.endsWith("\\")||basename.endsWith(":"))
             basename=basename.substring(0,basename.length()-2);
         return basename+File.separator+filename;

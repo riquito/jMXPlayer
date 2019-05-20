@@ -16,11 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mainFrame;
+package src.View;
 
 import java.awt.GridLayout;
 import java.util.Hashtable;
 import javax.swing.JCheckBox;
+
+import src.Controller.PartitureSelectedListener;
+import src.Model.MXData;
+import src.Model.MXData.GraphicInstanceGroup;
+
 import java.util.HashSet;
 
 /**
@@ -40,9 +45,6 @@ class PartitudeSelectedEvent extends java.util.EventObject {
 // A class must implement this interface to get MyEvents.
 
 
-interface PartitureSelectedListener extends java.util.EventListener {
-    public void on_partiture_selected(MXData.GraphicInstanceGroup group,boolean isSelected);
-}
 public class PartitureSelectionWindow extends javax.swing.JFrame {
     private Hashtable<JCheckBox,MXData.GraphicInstanceGroup> mxChkbox2groups;
     

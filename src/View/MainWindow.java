@@ -21,7 +21,7 @@
  *
  */
 
-package mainFrame;
+package src.View;
 
 import java.awt.event.MouseEvent;
 import javax.swing.*;
@@ -41,6 +41,13 @@ import javax.media.Manager;
 import javax.media.Player;
 import javax.media.Time;
 import javax.swing.Timer;
+
+import src.Component.HighLights;
+import src.Controller.MXHandler;
+import src.Controller.PartitureSelectedListener;
+import src.Model.Coord;
+import src.Model.MXData;
+import src.Model.Voice;
 
 import javax.media.RealizeCompleteEvent;
 import javax.media.ControllerListener;

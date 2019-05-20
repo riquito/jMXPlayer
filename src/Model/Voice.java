@@ -18,7 +18,7 @@
 
 
 
-package mainFrame;
+package src.Model;
 
 import java.awt.Color;
 

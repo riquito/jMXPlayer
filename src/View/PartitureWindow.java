@@ -18,7 +18,7 @@
 
 
 
-package mainFrame;
+package src.View;
 
 import java.awt.Graphics;
 import java.awt.Graphics;
@@ -30,6 +30,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+
+import src.Component.HighLights;
+import src.Model.MXData;
 
 
 // Declare the event. It must extend EventObject.

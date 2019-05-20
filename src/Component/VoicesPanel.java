@@ -18,12 +18,14 @@
 
 
 
-package mainFrame;
+package src.Component;
 
 import java.awt.GridLayout;
 import java.util.Hashtable;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
+
+import src.Model.Voice;
 
 /**
  *
@@ -70,7 +72,7 @@ public class VoicesPanel extends JPanel{
         ((Voice)this.voicesDict.get(chkBtn.getText())).setVisible(chkBtn.isSelected());
     }
     
-    void removeAllItems(){
+    public void removeAllItems(){
         this.removeAll();
     }
 }
