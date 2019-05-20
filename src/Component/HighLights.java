@@ -43,28 +43,11 @@ import src.Model.Voice;
  * @author Riquito
  */
 public class HighLights {
-    
-    private class SpinedLabel extends JLabel{
-        public Voice voice; //stored for possible future uses
-        
-        public SpinedLabel(Voice voice){
-            super();
-            this.voice=voice;
-            
-            this.setOpaque(true);
-            this.setBackground(voice.rgba);
-            this.setBorder(BorderFactory.createLineBorder(Color.black));
-        }
-    }
-    
     public double scaling=1.0;
     public int xAdjust=0,yAdjust=0;
-    
     private int layerIndex=1; //index 0 is the background partiture image
-    
     private JLayeredPane bgPanel=null; // backrounds panel
     private Hashtable<String,SpinedLabel> spinedLabels;
-    
     
     /** Creates a new instance of HighLights */
     public HighLights(){

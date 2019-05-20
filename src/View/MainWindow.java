@@ -45,7 +45,10 @@ import javax.swing.Timer;
 import src.Component.HighLights;
 import src.Controller.MXHandler;
 import src.Controller.PartitureSelectedListener;
+import src.Model.AudioClip;
 import src.Model.Coord;
+import src.Model.GraphicInstance;
+import src.Model.GraphicInstanceGroup;
 import src.Model.MXData;
 import src.Model.Voice;
 
@@ -62,7 +65,7 @@ import javax.media.EndOfMediaEvent;
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
     
     private MXData MX;
-    private MXData.AudioClip currentAudioClip=null;
+    private AudioClip currentAudioClip=null;
     
     //seguono le variabili necessarie all'esecuzione di audio
     private Timer timer;
@@ -97,13 +100,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         
         this.partitureSelectionWin=new PartitureSelectionWindow();
         this.partitureSelectionWin.addMyEventListener(new PartitureSelectedListener(){
-            public void on_partiture_selected(MXData.GraphicInstanceGroup group,boolean isSelected) {
+            public void on_partiture_selected(GraphicInstanceGroup group,boolean isSelected) {
                 //System.out.println(group.description);
                 //System.out.println("selected = "+isSelected);
                 
-                for(PartitureWindow win: partitureWindows) {
-                    if (win.group==group) {
-                        win.setVisible(isSelected);
+                for(PartitureWindow window: partitureWindows) {
+                    if (window.getGroup() == group) {
+                        window.setVisible(isSelected);
                         break;
                     }
                 }
@@ -195,14 +198,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             
             //creo un'istanza di evidenziatori per ogni partitura
             marks=new HighLights();
-            final MXData.GraphicInstanceGroup group=this.MX.graphic_instance_group.get(grpKey);
-            final PartitureWindow win=new PartitureWindow(marks, group);
-            this.partitureWindows.add(win);
+            final GraphicInstanceGroup group=this.MX.graphic_instance_group.get(grpKey);
+            final PartitureWindow window = new PartitureWindow(marks, group);
+            this.partitureWindows.add(window);
             
             /*quando una partitura (finestra) viene chiusa, la nascondo
              * e la deseleziono da PartitureSelectionWindow
              */
-            win.addWindowListener(new java.awt.event.WindowAdapter() {
+            window.addWindowListener(new java.awt.event.WindowAdapter() {
                 public void windowClosing(java.awt.event.WindowEvent evt) {
                     evt.getWindow().setVisible(false);
                     partitureSelectionWin.enablePartiture(group,false);
@@ -212,7 +215,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             /*
              azioni legate a click su partitura
              */
-            win.getCanvas().addMouseListener(new java.awt.event.MouseListener() {
+            window.getCanvas().addMouseListener(new java.awt.event.MouseListener() {
                 public void mouseClicked(MouseEvent e) {
                 }
                 public void mouseEntered(MouseEvent e) {
@@ -221,34 +224,34 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 }
                 public void mousePressed(MouseEvent e) {
                     trackWindow.selectButton("play"); //just make the play button selected
-                    win.marks.hideAllLabel();
+                    window.getMarks().hideAllLabel();
                     try {
                         int x,y;
-                        x=(int)Math.round((e.getX()-win.marks.xAdjust)/win.marks.scaling);
-                        y=(int)Math.round((e.getY()-win.marks.yAdjust)/win.marks.scaling);
-                        Coord test=(Coord)((ArrayList)win.currentGraphicInstance.tree.foundRect(
-                            win.currentGraphicInstance.tree.getRoot(),x,y)).get(0);
+                        x=(int)Math.round((e.getX()-window.getMarks().xAdjust) / window.getMarks().scaling);
+                        y=(int)Math.round((e.getY()-window.getMarks().yAdjust) / window.getMarks().scaling);
+                        Coord test = (Coord)((ArrayList)window.getCurrentGraphicInstance().getTree().foundRect(
+                            window.getCurrentGraphicInstance().getTree().getRoot(),x,y)).get(0);
                         
                         String spine=null;
                         // XXX soluzione temporanea, serve un point2spine?
                         // forse e' abbastanza veloce
                         //     potremmo risparmiare spazio?
-                        for(String key: win.currentGraphicInstance.spine2point.keySet()){
-                            if (win.currentGraphicInstance.spine2point.get(key)==test) {
+                        for(String key: window.getCurrentGraphicInstance().getSpine2point().keySet()){
+                            if (window.getCurrentGraphicInstance().getSpine2point().get(key)==test) {
                                 spine=key;
                                 break;
                             }
 
                         }
                         if (spine!=null)
-                            updateRectangles(currentAudioClip.spine2time.get(spine));
+                            updateRectangles(currentAudioClip.getSpine2time().get(spine));
                     } catch (IndexOutOfBoundsException evt) {
                         System.out.println("mancato "+e.getPoint());
                     }
 
                     int y=0;
                     if(lastSeenSpine!=null)
-                        y =  currentAudioClip.spine2time.get(lastSeenSpine);
+                        y =  currentAudioClip.getSpine2time().get(lastSeenSpine);
                     Time x = new Time(new Double(y)/100.0D);
 
                     player.getGainControl().setMute(false);
@@ -287,7 +290,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             this.player.setMediaTime(new Time(0));
             
             for(PartitureWindow win: partitureWindows) {
-                win.marks.hideAllLabel();
+                win.getMarks().hideAllLabel();
             }
             
             //XXX questo non serve più ora che ci sono partiture multiple
@@ -353,12 +356,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             return;
         }
         
-        for(String key: this.MX.graphic_instance_group.keySet()){
+        for(String key : this.MX.graphic_instance_group.keySet()){
             this.partitureSelectionWin.addElement(this.MX.graphic_instance_group.get(key));
         }
         
-        for(String key: this.MX.audioClipDict.keySet()) {
-            this.audioCombo.addItem(this.MX.audioClipDict.get(key).relativePath);
+        for(String key : this.MX.audioClipDict.keySet()) {
+            this.audioCombo.addItem(this.MX.audioClipDict.get(key).getRelativePath());
         }
         this.audioCombo.setSelectedIndex(0);
         
@@ -649,7 +652,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         System.out.println("slider CLICKED");
         
         for(PartitureWindow win: partitureWindows) {
-            win.marks.hideAllLabel();
+            win.getMarks().hideAllLabel();
         }
         
         this.trackSliderMouseSomeHowPressed(evt);
@@ -701,15 +704,15 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         
         int media_time=new Float(maxValue*(x/this.trackSlider.getWidth())*100).intValue();
         
-        MXData.GraphicInstanceGroup.GraphicInstance gInstance;
-        for(PartitureWindow win: partitureWindows) {
-            gInstance=win.currentGraphicInstance;
+        GraphicInstance gInstance;
+        for(PartitureWindow window: partitureWindows) {
+            gInstance = window.getCurrentGraphicInstance();
             
-            if (media_time<this.currentAudioClip.spine2time.get(gInstance.spineStart)) {
+            if (media_time<this.currentAudioClip.getSpine2time().get(gInstance.getSpineStart())) {
                 //controllo se siamo tornati indietro di una pagina. il controllo per la pagina successiva
                 // si trova gia' in updateRectangles: potrei spostare questo là, ma durante l'esecuzione del
                 // brano sarebbe un if completamente inutile (l'audio va solo avanti)
-                win.loadPrevPage();
+                window.loadPrevPage();
             }
         }
         
@@ -727,7 +730,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         /*XXX attenzione. dovremmo controllare che la distanza non sia troppo elevata?
             (per esempio, se il tempo più vicino fosse dopo 10 sec non dovremmo evidenziarlo)
          */
-        media_time=(Integer)this.currentAudioClip.timeRBTree.getNearest(media_time);
+        media_time = (Integer)this.currentAudioClip.getTimeRBTree().getNearest(media_time);
         System.out.println("media_time calcolato "+media_time/100.0);
         this.player.setMediaTime(new Time(new Double(media_time)/100.0));
         this.startTime=System.currentTimeMillis()-media_time*10;
@@ -761,7 +764,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         System.out.println(" ||| lastseen spine "+lastSeenSpine);
         int y=0;
         if(lastSeenSpine!=null)
-            y = this.currentAudioClip.spine2time.get(lastSeenSpine);
+            y = this.currentAudioClip.getSpine2time().get(lastSeenSpine);
         Time x = new  Time(new Double(y)/100.0D);
         System.out.println("tempo "+x.getSeconds());
         
@@ -832,20 +835,20 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
      */
     public void updateRectangles(int media_time){
         
-        MXData.GraphicInstanceGroup.GraphicInstance gInstance;
+        GraphicInstance gInstance;
         for(PartitureWindow win: partitureWindows) {
-            gInstance=win.currentGraphicInstance;
+            gInstance = win.getCurrentGraphicInstance();
             //controllo se dobbiamo cambiare pagina
-            if (media_time>this.currentAudioClip.spine2time.get(gInstance.spineEnd)) {
+            if (media_time>this.currentAudioClip.getSpine2time().get(gInstance.getSpineEnd())) {
                 win.loadNextPage();
             }
         }
         
         //check if there are events associated to the current time
-        if (this.currentAudioClip.time2spine.containsKey(media_time)) {
-            Vector tmpSpines=null;
+        if (this.currentAudioClip.getSpine2time().containsKey(media_time)) {
+            Vector tmpSpines = null;
             //System.out.println(time);
-            tmpSpines=this.currentAudioClip.time2spine.get(media_time);
+            tmpSpines = this.currentAudioClip.getSpines(media_time);
             //System.out.println("action performed, le spines sono "+tmpSpines.size()+" al tempo "+ time);
             if (media_time==0) return;
             
@@ -871,18 +874,18 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                     
                     //i get the spatial coordinates of the event
                     if (tmpVoice.isVisible)
-                        tmpCoord=win.currentGraphicInstance.spine2point.get(lastSeenSpine);
+                        tmpCoord = win.getCurrentGraphicInstance().getSpine2point().get(lastSeenSpine);
                     else
                         tmpCoord=null;
 
                     try {
                         if (tmpCoord!=null) {
                             //voiceName=this.MX.spine2voice.get(tmpSpines.get(i));
-                            win.marks.appendLabel(tmpCoord,tmpVoice);
+                            win.getMarks().appendLabel(tmpCoord,tmpVoice);
                         } else {
                             // Delete possibly visible mark
                             tmpCoord = new Coord(-100,-100,1,1);
-                            win.marks.appendLabel(tmpCoord,tmpVoice);
+                            win.getMarks().appendLabel(tmpCoord,tmpVoice);
                             //System.out.println("OUT OF TIME -> "+time+" spina: "+lastSeenSpine);
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {

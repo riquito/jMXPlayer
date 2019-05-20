@@ -23,8 +23,7 @@ import java.util.Hashtable;
 import javax.swing.JCheckBox;
 
 import src.Controller.PartitureSelectedListener;
-import src.Model.MXData;
-import src.Model.MXData.GraphicInstanceGroup;
+import src.Model.GraphicInstanceGroup;
 
 import java.util.HashSet;
 
@@ -46,10 +45,10 @@ class PartitudeSelectedEvent extends java.util.EventObject {
 
 
 public class PartitureSelectionWindow extends javax.swing.JFrame {
-    private Hashtable<JCheckBox,MXData.GraphicInstanceGroup> mxChkbox2groups;
+    private Hashtable<JCheckBox, GraphicInstanceGroup> mxChkbox2groups;
     
     //this attribute contains the graphic groups wich are selected in JCheckBoxes
-    public HashSet<MXData.GraphicInstanceGroup> selected;
+    public HashSet<GraphicInstanceGroup> selected;
     
     // Create the listener list
     protected javax.swing.event.EventListenerList listenerList =
@@ -70,16 +69,19 @@ public class PartitureSelectionWindow extends javax.swing.JFrame {
     public PartitureSelectionWindow() {
         initComponents();
         
-        this.jPanel1.setLayout(new GridLayout(0,1,10,20));
+        this.jPanel1.setLayout(new GridLayout(0, 1, 10, 20));
         this.jPanel1.setVisible(true);
         
-        this.mxChkbox2groups=new Hashtable<JCheckBox,MXData.GraphicInstanceGroup>();
-        this.selected=new HashSet<MXData.GraphicInstanceGroup>();
+        this.mxChkbox2groups = new Hashtable<JCheckBox, GraphicInstanceGroup>();
+        this.selected = new HashSet<GraphicInstanceGroup>();
         
         this.addMyEventListener(new PartitureSelectedListener() {
-            public void on_partiture_selected(MXData.GraphicInstanceGroup group,boolean isSelected){
-                if (isSelected) selected.add(group);
-                else selected.remove(group);
+            public void on_partiture_selected(GraphicInstanceGroup group, boolean isSelected) {
+                if (isSelected) {
+                	selected.add(group);
+                } else {
+                	selected.remove(group);
+                }
             }
         });
     }
@@ -97,23 +99,21 @@ public class PartitureSelectionWindow extends javax.swing.JFrame {
      * 
      * @param group 
      */
-    public void addElement(MXData.GraphicInstanceGroup group){
-        JCheckBox tmpBox=new JCheckBox(group.description);
+    public void addElement(GraphicInstanceGroup group){
+        JCheckBox tmpBox = new JCheckBox(group.getDescription());
         mxChkbox2groups.put(tmpBox,group);
         this.jPanel1.add(tmpBox);
         
         tmpBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JCheckBox tmpBox=(JCheckBox)evt.getSource();
+                JCheckBox tmpBox = (JCheckBox)evt.getSource();
                 
                 Object[] listeners = listenerList.getListenerList();
                 // Each listener occupies two elements - the first is the listener class
                 // and the second is the listener instance
-                for (int i=0; i<listeners.length; i+=2) {
-                    if (listeners[i]==PartitureSelectedListener.class) {
-                        ((PartitureSelectedListener)listeners[i+1]).on_partiture_selected(
-                                mxChkbox2groups.get(tmpBox),tmpBox.isSelected()
-                        );
+                for (int i = 0; i < listeners.length; i += 2) {
+                    if (listeners[i] == PartitureSelectedListener.class) {
+                        ((PartitureSelectedListener) listeners[i+1]).on_partiture_selected(mxChkbox2groups.get(tmpBox), tmpBox.isSelected());
                     }
                 }
             }
@@ -123,7 +123,7 @@ public class PartitureSelectionWindow extends javax.swing.JFrame {
     /*
      Check/Uncheck a chkbox wheter the partiture should be visible or not
      */
-    public void enablePartiture(MXData.GraphicInstanceGroup group, boolean isEnabled){
+    public void enablePartiture(GraphicInstanceGroup group, boolean isEnabled){
         //XXX metodo chiaramente "lento". alternative? servono ? (e' solo un'interazione con l'utente)
         for(JCheckBox chkBox: this.mxChkbox2groups.keySet()){
             if(this.mxChkbox2groups.get(chkBox)==group) {

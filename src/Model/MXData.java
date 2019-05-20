@@ -26,108 +26,11 @@ import src.Util.Tools;
 
 import java.util.Collections;
 
-public class MXData implements Serializable{
+public class MXData implements Serializable {
     public String work_title;
     public String movement_title;
     public String author;
     public String baseDir;
-    
-    public class GraphicInstanceGroup {
-        public String description;
-        
-        public class GraphicInstance implements Comparable {
-            public String relativePath;
-            public Hashtable<String,Coord> spine2point;
-            public RTree tree;
-            
-            public String spineStart=null,spineEnd=null;
-            
-            public GraphicInstanceGroup group=null;
-            private int index=-1;
-            
-            public GraphicInstance(){
-                this.tree=new RTree(4);
-                this.spine2point=new Hashtable<String,Coord>();
-            }
-            
-            public GraphicInstance getNext() {
-                try {return this.group.instances.get(this.index+1);}
-                catch (ArrayIndexOutOfBoundsException e) {return null;}
-            }
-            
-            public GraphicInstance getPrev() {
-                try {return this.group.instances.get(this.index-1);}
-                catch (ArrayIndexOutOfBoundsException e) {return null;}
-            }
-            
-            public String getImagePath(){
-                return Tools.joinPath(baseDir,this.relativePath.replace('\\','/'));
-            }
-            
-            public int compareTo(Object o) {
-            	//escludendo a priori caso uguale...
-                return this.index>((GraphicInstance)o).index?1:-1;
-            }
-        }
-        
-        public Vector<GraphicInstance> instances;
-        
-        public GraphicInstanceGroup(String description) {
-            this.instances=new Vector<GraphicInstance>();
-            this.description=description;
-        }
-        
-        public void setNumInstances(int maxSize){
-            this.instances.setSize(maxSize);
-        }
-        
-        public GraphicInstance addInstance(int index){
-            GraphicInstance tmp=new GraphicInstance();
-            tmp.group=this;
-            tmp.index=index-1;
-            this.instances.add(tmp);
-            Collections.sort(this.instances);
-           
-            return tmp;
-        }
-         
-    }
-    
-    public class AudioClip implements Serializable{
-        public String relativePath;
-        public Hashtable<String,Integer> spine2time;
-        public Hashtable<Integer,Vector> time2spine;
-        public Tree timeRBTree;
-        
-        public AudioClip(){//String fileAudioPath){
-            //this.fileAudioPath=fileAudioPath;
-            this.spine2time=new Hashtable<String,Integer>();
-            this.time2spine=new Hashtable<Integer,Vector>();
-            this.timeRBTree=new Tree();
-        }
-        
-        public void addSpineTime(String spine, int time){
-            this.spine2time.put(spine,time);
-            
-            if (!this.time2spine.containsKey(time)) {
-                this.time2spine.put(time,new Vector<String>());
-            }
-            this.time2spine.get(time).add(spine);
-            this.timeRBTree.put((Comparable)time,null);
-        }
-        
-        public Vector<String> getSpines(int time){
-            return this.time2spine.get(time);
-        }
-        
-        public int getTime(String spine){
-            return this.spine2time.get(spine);
-        }
-        
-        public String getFileAudioPath(){
-            return  Tools.joinPath(baseDir,this.relativePath.replace('\\','/'));
-        }
-    }
     
     //collezioni di dati fondamentali, accessibili a tutti
     public Hashtable<String,GraphicInstanceGroup> graphic_instance_group;
@@ -150,7 +53,7 @@ public class MXData implements Serializable{
     
     public AudioClip addAudioClip(String relativePath){
         AudioClip clip=new AudioClip();
-        clip.relativePath=relativePath;
+        clip.setRelativePath(relativePath);
         this.audioClipDict.put(relativePath,clip);
         return clip;
     }

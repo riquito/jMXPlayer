@@ -1,7 +1,7 @@
 package src.Controller;
 
-import src.Model.MXData;
+import src.Model.GraphicInstanceGroup;
 
 public interface PartitureSelectedListener extends java.util.EventListener {
-    public void on_partiture_selected(MXData.GraphicInstanceGroup group,boolean isSelected);
+    public void on_partiture_selected(GraphicInstanceGroup group,boolean isSelected);
 }

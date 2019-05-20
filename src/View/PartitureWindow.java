@@ -15,198 +15,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
-
 package src.View;
 
-import java.awt.Graphics;
-import java.awt.Graphics;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-
 import src.Component.HighLights;
-import src.Model.MXData;
-
-
-// Declare the event. It must extend EventObject.
-class CanvasResizedEvent extends java.util.EventObject {
-    public CanvasResizedEvent(Object source) {
-        super(source);
-    }
-}
-
-// Declare the listener class. It must extend EventListener.
-interface CanvasResizedListener extends java.util.EventListener {
-    public void on_canvas_resized(int x_offset,int y_offset,double ratio);
-}
-
-
-class MyCanvas extends JPanel {
-    private BufferedImage img = null;
-    private int imgWidth, imgHeight;
-    
-    protected int x_offset, y_offset;
-    protected double ratio;
-    
-    public MyCanvas() {
-        super();
-    }
-    
-    // Create the listener list
-    protected javax.swing.event.EventListenerList listenerList =
-        new javax.swing.event.EventListenerList();
-    
-    // This methods allows classes to register for MyEvents
-    public void addMyEventListener(CanvasResizedListener listener) {
-        listenerList.add(CanvasResizedListener.class, listener);
-    }
-    
-    // This methods allows classes to unregister for MyEvents
-    public void removeMyEventListener(CanvasResizedListener listener) {
-        listenerList.remove(CanvasResizedListener.class, listener);
-    }
-    
-    public void paintComponent(Graphics g) {
-        int mainWidth=this.getWidth();
-        int mainHeight=this.getHeight();
-        BufferedImage tmpImg;
-        
-        int option=0;
-        
-        //set a background color
-        g.setColor(java.awt.Color.BLACK);
-        g.fillRect(0, 0, mainWidth,mainHeight);
-        
-        
-        if (img != null) {
-            int x,y;
-            double tmpRatio;
-            
-            /*
-             * ### spiegazione per il caso larghezza>altezza ###
-             * 
-             * se l'immagine è più larga che alta, la ridimensioniamo in modo
-             * che la sua larghezza sia pari a quella della finestra.
-             * se tuttavia la finestra risulta essere troppo bassa per contenere
-             * la nuova altezza dell'immagine, allora ridimensioniamo in base
-             *  alla larghezza.
-             * 
-             */
-            if (imgWidth>imgHeight) {
-                option=0;
-                tmpRatio=new Float(mainWidth)/this.imgWidth;
-                if (this.imgHeight*tmpRatio>mainHeight) {
-                    option=1;
-                }
-            }
-            else {
-                option=1;
-                tmpRatio=new Float(mainHeight)/this.imgHeight;
-                if (this.imgWidth*tmpRatio>mainWidth) {
-                    option=0;
-                }
-            }
-            
-            if (option==0) {
-                tmpRatio=new Float(mainWidth)/this.imgWidth;
-                System.out.println("ratio is "+tmpRatio);
-                tmpImg=this.scaleImage(img, tmpRatio);
-                x=0;
-                y=new Double((mainHeight-tmpRatio*this.imgHeight)/2.0).intValue();
-            }
-            else {
-                tmpRatio=new Float(mainHeight)/this.imgHeight;
-                System.out.println("ratio is "+tmpRatio);
-                y=0;
-                x=new Double((mainWidth-tmpRatio*this.imgWidth)/2.0).intValue();
-                
-            }
-            
-           
-            tmpImg=this.scaleImage(img, tmpRatio);
-            g.drawImage(tmpImg, x, y, null);
-            
-            if (tmpRatio!=this.ratio) {
-                this.ratio=tmpRatio;
-                this.x_offset=x;
-                this.y_offset=y;
-                
-                System.out.println("painting: x_off, y_off: "+x+" "+y);
-                
-                Object[] listeners = listenerList.getListenerList();
-                // Each listener occupies two elements - the first is the listener class
-                // and the second is the listener instance
-                for (int i=0; i<listeners.length; i+=2) {
-                    if (listeners[i]==CanvasResizedListener.class) {
-                        ((CanvasResizedListener)listeners[i+1]).on_canvas_resized(
-                                this.x_offset,this.y_offset,this.ratio
-                        );
-                    }
-                }
-            }
-                
-            
-        }
-    }
-    
-    private BufferedImage scaleImage(BufferedImage img, double scale) {
-        if (scale<0.0) scale=0.0;
-        AffineTransformOp op = new AffineTransformOp
-          (AffineTransform.getScaleInstance(scale, scale), null);
-        return op.filter(img, null);
-        
-    }
-    
-    protected void setImage(BufferedImage img){
-        this.img=img;
-        this.imgWidth=img.getWidth();
-        this.imgHeight=img.getHeight();
-        this.repaint();
-    }
-}
+import src.Controller.CanvasResizedListener;
+import src.Model.GraphicInstance;
+import src.Model.GraphicInstanceGroup;
+import src.Component.MyCanvas;
 
 /**
  *
  * @author  Riquito
  */
 public class PartitureWindow extends javax.swing.JFrame {
-    public HighLights marks;
-    public MXData.GraphicInstanceGroup group;
-    
+    private HighLights marks;
+    private GraphicInstanceGroup graphicGroup;
     private MyCanvas mainCanvas;
-    
     private BufferedImage currentImage = null;
     private BufferedImage nextImage = null;
+    private GraphicInstance currentGraphicInstance;
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLayeredPane jLayeredPane2;
+    // End of variables declaration//GEN-END:variables
     
-    public MXData.GraphicInstanceGroup.GraphicInstance currentGraphicInstance;
     
     /**
      * Creates new form PartitureWindow
      */
-    public PartitureWindow(HighLights marks,MXData.GraphicInstanceGroup group) {
+    public PartitureWindow(HighLights marks, GraphicInstanceGroup group) {
         initComponents();
         
-        this.marks=marks;
-        this.group=group;
+        this.marks = marks;
+        this.graphicGroup = group;
         
-        this.mainCanvas=new MyCanvas();
+        this.mainCanvas = new MyCanvas();
         this.jLayeredPane2.add(this.mainCanvas,0);
         
         this.marks.setBackgroundPanel(this.jLayeredPane2);
         
-        final HighLights cpMarks=this.marks;
+        final HighLights cpMarks = this.marks;
         this.mainCanvas.addMyEventListener(new CanvasResizedListener(){
-            public void on_canvas_resized(int x_offset,int y_offset,double ratio) {
-                cpMarks.xAdjust=x_offset;
-                cpMarks.yAdjust=y_offset;
-                cpMarks.scaling=ratio;
+            public void on_canvas_resized(int x_offset, int y_offset, double ratio) {
+                cpMarks.xAdjust = x_offset;
+                cpMarks.yAdjust = y_offset;
+                cpMarks.scaling = ratio;
             }
         });
     }
@@ -216,92 +73,104 @@ public class PartitureWindow extends javax.swing.JFrame {
     }
     
     public void resetPrefetching() {
-        this.nextImage=null;
+        this.nextImage = null;
     }
     
+    public GraphicInstanceGroup getGroup() {
+		return graphicGroup;
+	}
+    
+    public HighLights getMarks() {
+    	return marks;
+    }
     
     /**
      *legge un'immagine da un filepath
      *@imgPath è una path relativa alla directory Resources
      */
-    private BufferedImage readImage(String imgPath){
-        BufferedImage img=null;
+    private BufferedImage readImage(String imgPath) {
+        BufferedImage image = null;
         
         try {
-            img=ImageIO.read(new File(imgPath));
+            image = ImageIO.read(new File(imgPath));
         }
         catch (IOException e) {
             System.err.println("Errore nel caricamento dell'immagine di uno spartito");
             e.printStackTrace();
         }
-        return img;
+        return image;
     }
     
     
     
-    private void prefetchNextPage(MXData.GraphicInstanceGroup.GraphicInstance gi)     {
-    	if (gi!=null) {
-            BufferedImage i = readImage(gi.getImagePath());
-            this.nextImage = i;
+    private void prefetchNextPage(GraphicInstance instance) {
+    	if (instance != null) {
+            BufferedImage image = readImage(instance.getImagePath());
+            this.nextImage = image;
             //System.out.println("Prefetch di "+gi.getImagePath());
     	}
-    }	
+    }
     
     
     /*
      load the first image in the MXData group
      */
     public void loadFirstPage(){
-        this.loadPage(this.group.instances.get(0));
+        this.loadPage(this.graphicGroup.getInstances().get(0));
     }
     
     /*
      redraw the image, checking for window dimension
     */
     private void refreshCanvas(){
-        this.mainCanvas.setBounds(0,0,this.jLayeredPane2.getWidth(),this.jLayeredPane2.getHeight());
+        this.mainCanvas.setBounds(0, 0, this.jLayeredPane2.getWidth(), this.jLayeredPane2.getHeight());
         this.mainCanvas.setImage(this.currentImage);
     }
     
     /*
      load a partiture page
      */
-    private void loadPage(MXData.GraphicInstanceGroup.GraphicInstance gInstance){
-        this.currentGraphicInstance=gInstance;
+    private void loadPage(GraphicInstance instance) {
+        this.setCurrentGraphicInstance(instance);
         
         if (this.nextImage == null) {
-            this.currentImage= this.readImage(gInstance.getImagePath());
-    	}
-    	else {	
+            this.currentImage = this.readImage(instance.getImagePath());
+    	} else {	
             this.currentImage = this.nextImage;
             this.nextImage = null;
     	}
-        
-	this.refreshCanvas();
-        
-        this.marks.hideAllLabel();
-        
-   	//fare delayed fetch della prossima se esistente
-	java.util.Timer delayedPrefetch = new java.util.Timer(); 
-        final MXData.GraphicInstanceGroup.GraphicInstance next=gInstance.getNext();
-	delayedPrefetch.schedule(new java.util.TimerTask() { public void run() {prefetchNextPage(next);}} ,800);
+
+		this.refreshCanvas();
+	    
+	    this.marks.hideAllLabel();
+	    
+	   	//fare delayed fetch della prossima se esistente
+		java.util.Timer delayedPrefetch = new java.util.Timer(); 
+    
+		final GraphicInstance next = graphicGroup.getNextInstance();
+		
+		delayedPrefetch.schedule(new java.util.TimerTask() { 
+			public void run() {
+				prefetchNextPage(next);
+			}
+		} ,800);
     }
     
     /*
      load the next image in the MXData group, if any
      */
-    public void loadNextPage(){
-        if(this.currentGraphicInstance.getNext()!=null) {
-            this.loadPage(this.currentGraphicInstance.getNext());
+    public void loadNextPage() {
+        if (this.graphicGroup.getNextInstance() != null) {
+            this.loadPage(this.graphicGroup.getNextInstance());
         }
     }
     
     /*
      load the previous image in the MXData group, if any
      */
-    public void loadPrevPage(){
-        if(this.currentGraphicInstance.getPrev()!=null) {
-            this.loadPage(this.currentGraphicInstance.getPrev());
+    public void loadPrevPage() {
+        if (this.graphicGroup.getPreviousInstance() != null) {
+            this.loadPage(this.graphicGroup.getPreviousInstance());
         }
     }
     
@@ -312,7 +181,6 @@ public class PartitureWindow extends javax.swing.JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         jLayeredPane2 = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -345,11 +213,12 @@ public class PartitureWindow extends javax.swing.JFrame {
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
         this.refreshCanvas();
     }//GEN-LAST:event_formComponentResized
-    
-    
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLayeredPane jLayeredPane2;
-    // End of variables declaration//GEN-END:variables
-    
+
+	public GraphicInstance getCurrentGraphicInstance() {
+		return currentGraphicInstance;
+	}
+
+	public void setCurrentGraphicInstance(GraphicInstance currentGraphicInstance) {
+		this.currentGraphicInstance = currentGraphicInstance;
+	}
 }

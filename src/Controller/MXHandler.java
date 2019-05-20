@@ -23,7 +23,10 @@ import java.util.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
+import src.Model.AudioClip;
 import src.Model.Coord;
+import src.Model.GraphicInstance;
+import src.Model.GraphicInstanceGroup;
 import src.Model.MXData;
 import src.Model.Voice;
 
@@ -35,9 +38,9 @@ public class MXHandler extends DefaultHandler {
     private Boolean is_worktitle=false;
     private String crnt_voice=""; //crnt = current
     
-    private MXData.GraphicInstanceGroup crnt_gInstanceGroup;
-    private MXData.GraphicInstanceGroup.GraphicInstance crnt_gInstance;
-    private MXData.AudioClip crnt_audioClip;
+    private GraphicInstanceGroup crnt_gInstanceGroup;
+    private GraphicInstance crnt_gInstance;
+    private AudioClip crnt_audioClip;
     
     public void startDocument() {
         this.MX=new MXData();
@@ -65,8 +68,8 @@ public class MXHandler extends DefaultHandler {
             int height=new Integer(attrs.getValue("lower_right_y"))-y;
             Coord tmpCoord=new Coord(x,y,width,height);
             
-            crnt_gInstance.spine2point.put(attrs.getValue("event_ref"),tmpCoord);
-            crnt_gInstance.tree.insertNewElement(tmpCoord);
+            crnt_gInstance.getSpine2point().put(attrs.getValue("event_ref"),tmpCoord);
+            crnt_gInstance.getTree().insertNewElement(tmpCoord);
             /*crnt_gInstance.tree.insertNewElement(tmpCoord);*/
         }
         
@@ -77,8 +80,8 @@ public class MXHandler extends DefaultHandler {
         }
         
         else if (localName.equals("graphic_instance")){
-            crnt_gInstance=crnt_gInstanceGroup.addInstance(new Integer(attrs.getValue("position_in_group")));
-            crnt_gInstance.relativePath=attrs.getValue("file_name");
+            crnt_gInstanceGroup.addInstance(new GraphicInstance());
+            crnt_gInstance.setRelativeImagePath(attrs.getValue("file_name"));
             //mancano nel nuovo xml spine_start_ref ed end_ref
         }
         
@@ -103,7 +106,7 @@ public class MXHandler extends DefaultHandler {
     
     public void endElement(String uri, String localName, String qName) {
         if (localName.equals("graphic_istance_group")){
-            Collections.sort(crnt_gInstanceGroup.instances);
+//            Collections.sort(crnt_gInstanceGroup.instances);
             this.crnt_gInstanceGroup=null;
             this.crnt_gInstance=null;
         }
@@ -127,8 +130,8 @@ public class MXHandler extends DefaultHandler {
             /*questa parte prende un audio a caso ed individua spineStart e spineEnd
              che ci servono ma non esistono piu' nel nuovo formato MX*/
             
-            MXData.AudioClip audioClip=null;
-            for(MXData.AudioClip clip: handler.MX.audioClipDict.values()) {
+            AudioClip audioClip = null;
+            for(AudioClip clip: handler.MX.audioClipDict.values()) {
                 audioClip=clip;
                 break;
             }
@@ -140,15 +143,15 @@ public class MXHandler extends DefaultHandler {
             String spineStart, spineEnd;
             int startTime,endTime;
             int num;
-            for(MXData.GraphicInstanceGroup group: handler.MX.graphic_instance_group.values()) {
-                for(MXData.GraphicInstanceGroup.GraphicInstance gInstance: group.instances) {
-                    spineStart=null;
-                    spineEnd=null;
-                    startTime=999999999;
-                    endTime=-1;
+            for(GraphicInstanceGroup group: handler.MX.graphic_instance_group.values()) {
+                for(GraphicInstance instance: group.getInstances()) {
+                    spineStart = null;
+                    spineEnd = null;
+                    startTime = 999999999;
+                    endTime = -1;
                     
-                    for(String tmpSpine: gInstance.spine2point.keySet()){
-                        try {num=audioClip.spine2time.get(tmpSpine);}
+                    for(String tmpSpine: instance.getSpine2point().keySet()){
+                        try {num = audioClip.getSpine2time().get(tmpSpine);}
                         catch (NullPointerException e) {continue;}
                         if (num<startTime) {
                             startTime=num;
@@ -159,8 +162,8 @@ public class MXHandler extends DefaultHandler {
                             spineEnd=tmpSpine;
                         }
                     }
-                    gInstance.spineStart=spineStart;
-                    gInstance.spineEnd=spineEnd;
+                    instance.setSpineStart(spineStart);
+                    instance.setSpineEnd(spineEnd);
                 }
             }
             
