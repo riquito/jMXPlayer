@@ -129,7 +129,8 @@ public class PlayerTrackWindow extends javax.swing.JFrame {
         jSlider1.setValue(0);
         jSlider1.setEnabled(false);
 
-        playToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Play24.gif")));
+//        playToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Play24.gif")));
+        playToggleBtn.setText("play");
         playToggleBtn.setEnabled(false);
         playToggleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -137,7 +138,8 @@ public class PlayerTrackWindow extends javax.swing.JFrame {
             }
         });
 
-        pauseToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Pause24.gif")));
+//        pauseToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Pause24.gif")));
+        pauseToggleBtn.setText("pause");
         pauseToggleBtn.setEnabled(false);
         pauseToggleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,7 +147,8 @@ public class PlayerTrackWindow extends javax.swing.JFrame {
             }
         });
 
-        stopToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Stop24.gif")));
+//        stopToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Stop24.gif")));
+        stopToggleBtn.setText("stop");
         stopToggleBtn.setSelected(true);
         stopToggleBtn.setEnabled(false);
         stopToggleBtn.addActionListener(new java.awt.event.ActionListener() {

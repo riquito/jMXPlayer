@@ -507,7 +507,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         jLabel1.setText("Traccia corrente");
 
-        partitureToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/spartito.png"))); // NOI18N
+//        partitureToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/spartito.png"))); // NOI18N
         partitureToggleBtn.setText("Partiture");
         partitureToggleBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         partitureToggleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -516,7 +516,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        voicesToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/voices.png"))); // NOI18N
+//        voicesToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/voices.png"))); // NOI18N
         voicesToggleBtn.setText("Voci");
         voicesToggleBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         voicesToggleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -525,7 +525,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        trackToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/player.png"))); // NOI18N
+//        trackToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/player.png"))); // NOI18N
         trackToggleBtn.setText("Traccia");
         trackToggleBtn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         trackToggleBtn.addActionListener(new java.awt.event.ActionListener() {
