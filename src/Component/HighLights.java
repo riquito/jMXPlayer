@@ -29,14 +29,15 @@ package src.Component;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-import src.Model.Coord;
 import src.Model.Voice;
+import src.Util.RectangleExtension;
 
 /**
  *
@@ -60,7 +61,7 @@ public class HighLights {
     
     public void hideAllLabel() {
     	
-    	Coord data = new Coord(-100,-100,1,1);
+    	Rectangle data = new Rectangle(-100,-100,1,1);
     	Enumeration keys = this.spinedLabels.keys();
     	while ( keys.hasMoreElements() ) {
     	   String key = (String)keys.nextElement();
@@ -76,7 +77,7 @@ public class HighLights {
     /**
      * Aggiunge un rettangolo trasparente su di una nota
      */
-    public void appendLabel(Coord data, Voice voice){
+    public void appendLabel(Rectangle data, Voice voice){
         SpinedLabel singleLabel=null;
         
         if (data==null || voice==null) {
@@ -95,7 +96,7 @@ public class HighLights {
             this.bgPanel.add(singleLabel,this.layerIndex);
         }
         
-        data=data.scale(this.scaling);
+        data = RectangleExtension.scale(data, this.scaling);
         singleLabel.setBounds(data.x+this.xAdjust, data.y+this.yAdjust, (int)data.getWidth(), (int)data.getHeight());
         singleLabel.setPreferredSize(new Dimension((int)data.getWidth(),(int)data.getHeight()));
         //setlayer is needed to show again the label (setvisible, validate, updateUI don't work)

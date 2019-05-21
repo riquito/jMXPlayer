@@ -18,17 +18,18 @@
 
 package src.Controller;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.util.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 
 import src.Model.AudioClip;
-import src.Model.Coord;
 import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
 import src.Model.MXData;
 import src.Model.Voice;
+import src.Util.RectangleExtension;
 
 
 public class MXHandler extends DefaultHandler {
@@ -66,7 +67,7 @@ public class MXHandler extends DefaultHandler {
             int y=new Integer(attrs.getValue("upper_left_y"));
             int width=new Integer(attrs.getValue("lower_right_x"))-x;
             int height=new Integer(attrs.getValue("lower_right_y"))-y;
-            Coord tmpCoord=new Coord(x,y,width,height);
+            Rectangle tmpCoord=new Rectangle(x,y,width,height);
             
             crnt_gInstance.getSpine2point().put(attrs.getValue("event_ref"),tmpCoord);
             crnt_gInstance.getTree().insertNewElement(tmpCoord);

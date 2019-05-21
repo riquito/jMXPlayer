@@ -46,11 +46,11 @@ import src.Component.HighLights;
 import src.Controller.MXHandler;
 import src.Controller.PartitureSelectedListener;
 import src.Model.AudioClip;
-import src.Model.Coord;
 import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
 import src.Model.MXData;
 import src.Model.Voice;
+import src.Util.RectangleExtension;
 
 import javax.media.RealizeCompleteEvent;
 import javax.media.ControllerListener;
@@ -229,7 +229,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                         int x,y;
                         x=(int)Math.round((e.getX()-window.getMarks().xAdjust) / window.getMarks().scaling);
                         y=(int)Math.round((e.getY()-window.getMarks().yAdjust) / window.getMarks().scaling);
-                        Coord test = (Coord)((ArrayList)window.getCurrentGraphicInstance().getTree().foundRect(
+                        Rectangle test = (Rectangle)((ArrayList)window.getCurrentGraphicInstance().getTree().foundRect(
                             window.getCurrentGraphicInstance().getTree().getRoot(),x,y)).get(0);
                         
                         String spine=null;
@@ -852,7 +852,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             //System.out.println("action performed, le spines sono "+tmpSpines.size()+" al tempo "+ time);
             if (media_time==0) return;
             
-            Coord tmpCoord;
+            Rectangle tmpCoord;
             String voiceName;
             Voice tmpVoice;
             
@@ -884,7 +884,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                             win.getMarks().appendLabel(tmpCoord,tmpVoice);
                         } else {
                             // Delete possibly visible mark
-                            tmpCoord = new Coord(-100,-100,1,1);
+                            tmpCoord = new Rectangle(-100,-100,1,1);
                             win.getMarks().appendLabel(tmpCoord,tmpVoice);
                             //System.out.println("OUT OF TIME -> "+time+" spina: "+lastSeenSpine);
                         }

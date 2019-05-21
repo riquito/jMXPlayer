@@ -1,12 +1,13 @@
 package src.Model;
 
+import java.awt.Rectangle;
 import java.util.Hashtable;
 
 import src.Util.Tools;
 
 public class GraphicInstance {
 	private String relativeImagePath;
-	private Hashtable<String,Coord> spine2point;
+	private Hashtable<String, Rectangle> spine2point;
 	private RTree tree;
 	private String basePath;
 	private String spineStart = null;
@@ -14,7 +15,7 @@ public class GraphicInstance {
 
 	public GraphicInstance() {
 		this.setTree(new RTree(4));
-		this.setSpine2point(new Hashtable<String,Coord>());
+		this.setSpine2point(new Hashtable<String, Rectangle>());
 	}
 	
 	public void setBasePath(String imagePath) {
@@ -37,11 +38,11 @@ public class GraphicInstance {
 		this.tree = tree;
 	}
 
-	public Hashtable<String,Coord> getSpine2point() {
+	public Hashtable<String, Rectangle> getSpine2point() {
 		return spine2point;
 	}
 
-	public void setSpine2point(Hashtable<String,Coord> spine2point) {
+	public void setSpine2point(Hashtable<String, Rectangle> spine2point) {
 		this.spine2point = spine2point;
 	}
 

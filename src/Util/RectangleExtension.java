@@ -16,23 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package src.Model;
+package src.Util;
 import java.awt.Rectangle;
 
 
-public class Coord extends Rectangle {
-    public Coord() {
-        
-    }
-    public Coord(int x, int y, int width, int height) {
-        super(x,y,width,height);
-    }
-    public Coord scale(double ratio){
-        if (ratio==1.0) return this;
-        return new Coord((int)Math.round(x*ratio),
-            (int)Math.round(y*ratio),
-            (int)Math.round(this.getWidth()*ratio),
-            (int)Math.round(this.getHeight()*ratio)
-        );
+public class RectangleExtension {
+    public static Rectangle scale(Rectangle ractangle, double ratio) {
+    	return new Rectangle((int)Math.round(ractangle.getX() * ratio),
+    			(int)Math.round(ractangle.getY() * ratio),
+    			(int)Math.round(ractangle.getWidth() * ratio),
+    			(int)Math.round(ractangle.getHeight() * ratio));
     }
 }
