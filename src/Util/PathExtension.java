@@ -25,20 +25,17 @@ import java.io.File;
  *
  * @author Riquito
  */
-public class Tools {
-    
-    /** Creates a new instance of Tools */
-    public Tools() {
-    }
-    
+public class PathExtension {
     /**
      * Join two or more pathname components, inserting the system file separator
      *  as needed
      * 
      */
-    public static String joinPath(String basename, String filename) {
-        if (basename.endsWith("/")||basename.endsWith("\\")||basename.endsWith(":"))
-            basename=basename.substring(0,basename.length()-2);
-        return basename+File.separator+filename;
+    public static String join(String basePath, String fileName) {
+        if (basePath.endsWith("/") || basePath.endsWith("\\") || basePath.endsWith(":")) {
+        	basePath = basePath.substring(0, basePath.length() - 2);
+        }
+
+        return basePath + File.separator + fileName;
     }
 }

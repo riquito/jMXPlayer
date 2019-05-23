@@ -3,7 +3,7 @@ package src.Model;
 import java.awt.Rectangle;
 import java.util.Hashtable;
 
-import src.Util.Tools;
+import src.Util.PathExtension;
 
 public class GraphicInstance {
 	private String relativeImagePath;
@@ -27,7 +27,7 @@ public class GraphicInstance {
 	}
 
 	public String getImagePath(){
-		return Tools.joinPath(basePath, this.relativeImagePath.replace('\\','/'));
+		return PathExtension.join(basePath, this.relativeImagePath.replace('\\','/'));
 	}
 
 	public RTree getTree() {

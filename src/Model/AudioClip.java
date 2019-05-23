@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import src.Util.Tools;
+import src.Util.PathExtension;
 
 public class AudioClip implements Serializable {
 	private String relativePath;
@@ -40,7 +40,7 @@ public class AudioClip implements Serializable {
     }
     
     public String getFileAudioPath(){
-        return Tools.joinPath(basePath, this.getRelativePath().replace('\\','/'));
+        return PathExtension.join(basePath, this.getRelativePath().replace('\\','/'));
     }
     
     public Hashtable<Integer,Vector> getTime2Spine() {
