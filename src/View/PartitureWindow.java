@@ -61,9 +61,9 @@ public class PartitureWindow extends javax.swing.JFrame {
         final HighLights cpMarks = this.marks;
         this.mainCanvas.addMyEventListener(new CanvasResizedListener(){
             public void on_canvas_resized(int x_offset, int y_offset, double ratio) {
-                cpMarks.xAdjust = x_offset;
-                cpMarks.yAdjust = y_offset;
-                cpMarks.scaling = ratio;
+                cpMarks.setXAdjust(x_offset);
+                cpMarks.setYAdjust(y_offset);
+                cpMarks.setScaling(ratio);
             }
         });
     }

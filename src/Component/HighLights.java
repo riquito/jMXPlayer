@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /*
  * HighLights.java
  *
@@ -27,15 +26,13 @@
 
 package src.Component;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
+import src.Exception.AllParameterNullException;
 import src.Model.Voice;
 import src.Util.RectangleExtension;
 
@@ -44,64 +41,84 @@ import src.Util.RectangleExtension;
  * @author Riquito
  */
 public class HighLights {
-    public double scaling=1.0;
-    public int xAdjust=0,yAdjust=0;
-    private int layerIndex=1; //index 0 is the background partiture image
-    private JLayeredPane bgPanel=null; // backrounds panel
-    private Hashtable<String,SpinedLabel> spinedLabels;
-    
-    /** Creates a new instance of HighLights */
-    public HighLights(){
-        this.spinedLabels=new Hashtable<String,SpinedLabel>();
-    }
-    
-    public void setBackgroundPanel(JLayeredPane panel){
-        this.bgPanel=panel;
-    }
-    
-    public void hideAllLabel() {
-    	
-    	Rectangle data = new Rectangle(-100,-100,1,1);
-    	Enumeration keys = this.spinedLabels.keys();
-    	while ( keys.hasMoreElements() ) {
-    	   String key = (String)keys.nextElement();
-    	   SpinedLabel singleLabel = this.spinedLabels.get( key );
-    	   singleLabel.setBounds(data.x, data.y, (int)data.getWidth(), (int)data.getHeight());
-           singleLabel.setPreferredSize(new Dimension((int)data.getWidth(),(int)data.getHeight()));
-           //setlayer is needed to show again the label (setvisible, validate, updateUI don't work)
-           
-           this.bgPanel.setLayer(singleLabel,this.layerIndex);
-    	} // end while
-    	
-    }
-    /**
-     * Aggiunge un rettangolo trasparente su di una nota
-     */
-    public void appendLabel(Rectangle data, Voice voice){
-        SpinedLabel singleLabel=null;
-        
-        if (data==null || voice==null) {
-            //errore. capire perché non sono stati trovati
-            System.err.println("errore in appendLabel");
-            System.err.println("  ->data: "+data+" -> voice"+voice);
-            return;
-        }
-        
-        singleLabel=this.spinedLabels.get(voice.name);
-        if (singleLabel==null) {
-            //first time we listen to this voice
-            singleLabel=new SpinedLabel(voice);
-            this.spinedLabels.put(voice.name,singleLabel);
-            
-            this.bgPanel.add(singleLabel,this.layerIndex);
-        }
-        
-        data = RectangleExtension.scale(data, this.scaling);
-        singleLabel.setBounds(data.x+this.xAdjust, data.y+this.yAdjust, (int)data.getWidth(), (int)data.getHeight());
-        singleLabel.setPreferredSize(new Dimension((int)data.getWidth(),(int)data.getHeight()));
-        //setlayer is needed to show again the label (setvisible, validate, updateUI don't work)
-        
-        this.bgPanel.setLayer(singleLabel,this.layerIndex);
-    }
-    
+	private double scaling = 1.0;
+	private int xAdjust = 0, yAdjust = 0;
+	private int layerIndex = 1; // index 0 is the background partiture image
+	private JLayeredPane backgroundPanel = null;
+	private Hashtable<String, SpinedLabel> spinedLabels;
+
+	/** Creates a new instance of HighLights */
+	public HighLights() {
+		this.spinedLabels = new Hashtable<String, SpinedLabel>();
+	}
+	
+	public int getXAdjust() {
+		return xAdjust;
+	}
+
+	public void setXAdjust(int xAdjust) {
+		this.xAdjust = xAdjust;
+	}
+
+	public int getYAdjust() {
+		return yAdjust;
+	}
+
+	public void setYAdjust(int yAdjust) {
+		this.yAdjust = yAdjust;
+	}
+
+	public double getScaling() {
+		return scaling;
+	}
+
+	public void setScaling(double scaling) {
+		this.scaling = scaling;
+	}
+
+	public void setBackgroundPanel(JLayeredPane panel) {
+		this.backgroundPanel = panel;
+	}
+
+	public void hideAllLabel() {
+		Rectangle reactangle = new Rectangle(-100, -100, 1, 1);
+		Enumeration keys = this.spinedLabels.keys();
+		
+		while (keys.hasMoreElements()) {
+			String key = (String) keys.nextElement();
+			SpinedLabel singleLabel = this.spinedLabels.get(key);
+			singleLabel.setBounds(reactangle.x, reactangle.y, (int) reactangle.getWidth(), (int) reactangle.getHeight());
+			singleLabel.setPreferredSize(new Dimension((int) reactangle.getWidth(), (int) reactangle.getHeight()));
+			// setlayer is needed to show again the label (setvisible, validate, updateUI
+			// don't work)
+			this.backgroundPanel.setLayer(singleLabel, this.layerIndex);
+		}
+	}
+
+	/**
+	 * Aggiunge un rettangolo trasparente su di una nota
+	 * @throws AllParameterNullException 
+	 */
+	public void appendLabel(Rectangle rectangle, Voice voice) throws AllParameterNullException {
+		SpinedLabel singleLabel = null;
+
+		if (rectangle == null || voice == null) {		
+			throw new AllParameterNullException("Error in appendLabel");
+		}
+
+		singleLabel = this.spinedLabels.get(voice.name);
+		if (singleLabel == null) {
+			// first time we listen to this voice
+			singleLabel = new SpinedLabel(voice);
+			this.spinedLabels.put(voice.name, singleLabel);
+			this.backgroundPanel.add(singleLabel, this.layerIndex);
+		}
+
+		Rectangle newRectangle = RectangleExtension.scale(rectangle, this.getScaling());
+		singleLabel.setBounds(newRectangle.x + this.getXAdjust(), newRectangle.y + this.getYAdjust(), (int) newRectangle.getWidth(), (int) newRectangle.getHeight());
+		singleLabel.setPreferredSize(new Dimension((int) newRectangle.getWidth(), (int) newRectangle.getHeight()));
+		// setlayer is needed to show again the label (setvisible, validate, updateUI
+		// don't work)
+		this.backgroundPanel.setLayer(singleLabel, this.layerIndex);
+	}
 }
