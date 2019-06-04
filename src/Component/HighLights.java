@@ -106,11 +106,11 @@ public class HighLights {
 			throw new AllParameterNullException("Error in appendLabel");
 		}
 
-		singleLabel = this.spinedLabels.get(voice.name);
+		singleLabel = this.spinedLabels.get(voice.getName());
 		if (singleLabel == null) {
 			// first time we listen to this voice
 			singleLabel = new SpinedLabel(voice);
-			this.spinedLabels.put(voice.name, singleLabel);
+			this.spinedLabels.put(voice.getName(), singleLabel);
 			this.backgroundPanel.add(singleLabel, this.layerIndex);
 		}
 

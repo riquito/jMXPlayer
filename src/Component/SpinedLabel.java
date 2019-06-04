@@ -15,7 +15,7 @@ public class SpinedLabel extends JLabel{
         this.voice=voice;
         
         this.setOpaque(true);
-        this.setBackground(voice.rgba);
+        this.setBackground(voice.getColor());
         this.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 }

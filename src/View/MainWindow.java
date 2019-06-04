@@ -874,7 +874,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 						continue;
 
 					// i get the spatial coordinates of the event
-					if (tmpVoice.isVisible)
+					if (tmpVoice.isVisible())
 						tmpCoord = win.getCurrentGraphicInstance().getSpine2point().get(lastSeenSpine);
 					else
 						tmpCoord = null;
