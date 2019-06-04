@@ -27,36 +27,35 @@ import src.Util.PathExtension;
 import java.util.Collections;
 
 public class MXData implements Serializable {
-    public String work_title;
-    public String movement_title;
-    public String author;
-    public String baseDir;
-    
-    //collezioni di dati fondamentali, accessibili a tutti
-    public Hashtable<String,GraphicInstanceGroup> graphic_instance_group;
-    public Hashtable<String,AudioClip> audioClipDict;
-    public Hashtable<String,String> spine2voice;
-    public Hashtable<String,Voice> voices;
-    
-    public MXData (){
-        this.graphic_instance_group=new Hashtable<String,GraphicInstanceGroup>();
-        this.audioClipDict=new Hashtable<String,AudioClip>();
-        this.spine2voice=new Hashtable<String,String>();
-        this.voices=new Hashtable<String,Voice>();
-    }
-    
-    public GraphicInstanceGroup addGroup(String description){
-        GraphicInstanceGroup group=new GraphicInstanceGroup(description);
-        this.graphic_instance_group.put(description,group);
-        return group;
-    }
-    
-    public AudioClip addAudioClip(String relativePath){
-        AudioClip clip=new AudioClip();
-        clip.setRelativePath(relativePath);
-        this.audioClipDict.put(relativePath,clip);
-        return clip;
-    }
-    
-}
+	public String work_title;
+	public String movement_title;
+	public String author;
+	public String baseDir;
 
+	// collezioni di dati fondamentali, accessibili a tutti
+	public Hashtable<String, GraphicInstanceGroup> graphic_instance_group;
+	public Hashtable<String, AudioClip> audioClipDict;
+	public Hashtable<String, String> spine2voice;
+	public Hashtable<String, Voice> voices;
+
+	public MXData() {
+		this.graphic_instance_group = new Hashtable<String, GraphicInstanceGroup>();
+		this.audioClipDict = new Hashtable<String, AudioClip>();
+		this.spine2voice = new Hashtable<String, String>();
+		this.voices = new Hashtable<String, Voice>();
+	}
+
+	public GraphicInstanceGroup addGroup(String description) {
+		GraphicInstanceGroup group = new GraphicInstanceGroup(description);
+		this.graphic_instance_group.put(description, group);
+		return group;
+	}
+
+	public AudioClip addAudioClip(String relativePath) {
+		AudioClip clip = new AudioClip();
+		clip.setRelativePath(relativePath);
+		this.audioClipDict.put(relativePath, clip);
+		return clip;
+	}
+
+}

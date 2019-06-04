@@ -25,7 +25,7 @@ import src.Component.HighLights;
 import src.Controller.CanvasResizedListener;
 import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
-import src.Component.MyCanvas;
+import src.Component.ImageCanvas;
 
 /**
  *
@@ -34,7 +34,7 @@ import src.Component.MyCanvas;
 public class PartitureWindow extends javax.swing.JFrame {
     private HighLights marks;
     private GraphicInstanceGroup graphicGroup;
-    private MyCanvas mainCanvas;
+    private ImageCanvas mainCanvas;
     private BufferedImage currentImage = null;
     private BufferedImage nextImage = null;
     private GraphicInstance currentGraphicInstance;
@@ -53,13 +53,13 @@ public class PartitureWindow extends javax.swing.JFrame {
         this.marks = marks;
         this.graphicGroup = group;
         
-        this.mainCanvas = new MyCanvas();
+        this.mainCanvas = new ImageCanvas();
         this.jLayeredPane2.add(this.mainCanvas,0);
         
         this.marks.setBackgroundPanel(this.jLayeredPane2);
         
         final HighLights cpMarks = this.marks;
-        this.mainCanvas.addMyEventListener(new CanvasResizedListener(){
+        this.mainCanvas.addCanvasResizeEventListener(new CanvasResizedListener(){
             public void on_canvas_resized(int x_offset, int y_offset, double ratio) {
                 cpMarks.setXAdjust(x_offset);
                 cpMarks.setYAdjust(y_offset);
@@ -68,7 +68,7 @@ public class PartitureWindow extends javax.swing.JFrame {
         });
     }
     
-    public MyCanvas getCanvas(){
+    public ImageCanvas getCanvas(){
         return this.mainCanvas;
     }
     
