@@ -16,63 +16,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 package src.Component;
 
 import java.awt.GridLayout;
+
 import java.util.Hashtable;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import src.Model.Voice;
 
 /**
  *
  * @author Riquito
  */
-public class VoicesPanel extends JPanel{
-    private Hashtable<String,Voice> voicesDict=null;
-    
-    /** Creates a new instance of VoicesPanel2 */
-    public VoicesPanel() {
-        //this.setLayout(new BorderLayout());
-        this.setVisible(true);
-    }
-    
-    public void populate(Hashtable<String,Voice> voicesDict){
-        this.voicesDict=voicesDict;
-        JCheckBox tmpBtn;
-        Voice tmpVoice;
-        
-        this.setLayout(new GridLayout(0,1,10,20));
-        
-        
-        for (String voiceName : voicesDict.keySet()) {
-            tmpBtn=new JCheckBox(voiceName);
-            tmpBtn.setSelected(true);
-            tmpVoice=(Voice)voicesDict.get(voiceName);
-            tmpVoice.setVisible(true);
-            this.add(tmpBtn);
-            
-            tmpBtn.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    on_chkBox_clicked((JCheckBox)evt.getSource());
-                }
-            });
-        }
-    
-    }
-    
-    /**
-     * Check wheter a button has been selected or deselected, and update
-     * the vector "voicesDict" accordingly
-     */
-    void on_chkBox_clicked(JCheckBox chkBtn){
-        ((Voice)this.voicesDict.get(chkBtn.getText())).setVisible(chkBtn.isSelected());
-    }
-    
-    public void removeAllItems(){
-        this.removeAll();
-    }
+public class VoicesPanel extends JPanel {
+	private Hashtable<String, Voice> voiceDictionary = null;
+
+	/** Creates a new instance of VoicesPanel2 */
+	public VoicesPanel() {
+		// this.setLayout(new BorderLayout());
+		this.setVisible(true);
+	}
+	
+	public void setVoiceDictionary(Hashtable<String, Voice> voiceDictionary) {
+		this.voiceDictionary = voiceDictionary;
+	}
+
+	public void populate(Hashtable<String, Voice> voiceDictionary) {
+		setVoiceDictionary(voiceDictionary);
+		 
+		this.setLayout(new GridLayout(0, 1, 10, 20));
+
+		for (String voiceName : voiceDictionary.keySet()) {
+			changeVoiceVisibility(this.voiceDictionary.get(voiceName));
+			this.add(generateButton(voiceName));
+		}
+	}
+	
+	public void changeVoiceVisibility(Voice voice) {
+		voice.setVisible(true);
+	}
+	
+	public JCheckBox generateButton(String voiceName) {
+		JCheckBox newButton = new JCheckBox(voiceName);
+		newButton.setSelected(true);
+		newButton.addActionListener(actionListener);
+		return newButton;
+	}
+	
+	private ActionListener actionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+			changeVoiceVisiblityOnCheckbox((JCheckBox) event.getSource());
+		}
+	};
+
+	/**
+	 * Check wheter a button has been selected or deselected, and update the vector
+	 * "voicesDict" accordingly
+	 */
+	private void changeVoiceVisiblityOnCheckbox(JCheckBox chkBtn) {
+		this.voiceDictionary.get(chkBtn.getText()).setVisible(chkBtn.isSelected());
+	}
+
+	public void removeAllItems() {
+		this.removeAll();
+	}
 }
