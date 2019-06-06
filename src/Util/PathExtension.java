@@ -38,4 +38,8 @@ public class PathExtension {
 
         return basePath + File.separator + fileName;
     }
+    
+    public static String getParent(String path) {
+    	return (new File((new File(path)).getAbsolutePath())).getParent();
+    }
 }

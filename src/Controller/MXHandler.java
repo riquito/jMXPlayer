@@ -29,153 +29,129 @@ import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
 import src.Model.MXData;
 import src.Model.Voice;
+import src.Util.PathExtension;
 import src.Util.RectangleExtension;
 
-
 public class MXHandler extends DefaultHandler {
-    public MXData MX;
-    
-    private Boolean is_maintitle=false;
-    private Boolean is_worktitle=false;
-    private String crnt_voice=""; //crnt = current
-    
-    private GraphicInstanceGroup crnt_gInstanceGroup;
-    private GraphicInstance crnt_gInstance;
-    private AudioClip crnt_audioClip;
-    
-    public void startDocument() {
-        this.MX=new MXData();
-    }
-    
-    public void startElement(String uri, String localName, String qName, Attributes attrs) {
-        
-        //author saltiamo per ora
-        
-        if (localName.equals("rest") || localName.equals("chord")){
-            this.MX.spine2voice.put(attrs.getValue("event_ref"),this.crnt_voice);
-        }
-        
-        else if (localName.equals("voice")){
-            crnt_voice=attrs.getValue("voice_item_ref");
-            this.MX.voices.put(crnt_voice,new Voice(crnt_voice));
-        }
-        
-        
-        else if (localName.equals("graphic_event")){
-            
-            int x=new Integer(attrs.getValue("upper_left_x"));
-            int y=new Integer(attrs.getValue("upper_left_y"));
-            int width=new Integer(attrs.getValue("lower_right_x"))-x;
-            int height=new Integer(attrs.getValue("lower_right_y"))-y;
-            Rectangle tmpCoord=new Rectangle(x,y,width,height);
-            
-            crnt_gInstance.getSpine2point().put(attrs.getValue("event_ref"),tmpCoord);
-            crnt_gInstance.getTree().insertNewElement(tmpCoord);
-            /*crnt_gInstance.tree.insertNewElement(tmpCoord);*/
-        }
-        
-        else if (localName.equals("track_event")){
-            Float num=new Float(attrs.getValue("start_time"))*100;
-            crnt_audioClip.addSpineTime(attrs.getValue("event_ref"),
-                num.intValue());
-        }
-        
-        else if (localName.equals("graphic_instance")){
-            crnt_gInstanceGroup.addInstance(new GraphicInstance());
-            crnt_gInstance.setRelativeImagePath(attrs.getValue("file_name"));
-            //mancano nel nuovo xml spine_start_ref ed end_ref
-        }
-        
-        else if (localName.equals("graphic_instance_group")){
-            crnt_gInstanceGroup=this.MX.addGroup(attrs.getValue("description"));
-        }
-        
-        
-        else if (localName.equals("track")){
-            crnt_audioClip=this.MX.addAudioClip(attrs.getValue("file_name"));
-        }
-        
-        else if (localName.equals("main_title")){
-            this.is_maintitle=true;
-        }
-        else if (localName.equals("work_title")){
-            this.is_worktitle=true;
-        }
-        
-        
-    }
-    
-    public void endElement(String uri, String localName, String qName) {
-        if (localName.equals("graphic_istance_group")){
-//            Collections.sort(crnt_gInstanceGroup.instances);
-            this.crnt_gInstanceGroup=null;
-            this.crnt_gInstance=null;
-        }
-        
-    }
-    
-    public void characters(char[] ch, int start, int length) {
-        if (is_maintitle) this.MX.movement_title=new String(ch);
-        else if (is_worktitle) this.MX.work_title=new String(ch);
-    }
+	private MXData MX;
 
-    public static MXData parseIt(String path) {
-        try {
-            MXHandler handler = new MXHandler();
-            XMLReader reader = XMLReaderFactory.createXMLReader();
-            reader.setContentHandler(handler);
-            reader.parse(path);
-            
-            handler.MX.baseDir=(new File((new File(path)).getAbsolutePath())).getParent();
-            
-            /*questa parte prende un audio a caso ed individua spineStart e spineEnd
-             che ci servono ma non esistono piu' nel nuovo formato MX*/
-            
-            AudioClip audioClip = null;
-            for(AudioClip clip: handler.MX.audioClipDict.values()) {
-                audioClip=clip;
-                break;
-            }
-            if (audioClip==null) {
-                //we have no audio, at present this is a problem
-                return null;
-            }
-            
-            String spineStart, spineEnd;
-            int startTime,endTime;
-            int num;
-            for(GraphicInstanceGroup group: handler.MX.graphic_instance_group.values()) {
-                for(GraphicInstance instance: group.getInstances()) {
-                    spineStart = null;
-                    spineEnd = null;
-                    startTime = 999999999;
-                    endTime = -1;
-                    
-                    for(String tmpSpine: instance.getSpine2point().keySet()){
-                        try {num = audioClip.getSpine2time().get(tmpSpine);}
-                        catch (NullPointerException e) {continue;}
-                        if (num<startTime) {
-                            startTime=num;
-                            spineStart=tmpSpine;
-                        }
-                        if (num>endTime) {
-                            endTime=num;
-                            spineEnd=tmpSpine;
-                        }
-                    }
-                    instance.setSpineStart(spineStart);
-                    instance.setSpineEnd(spineEnd);
-                }
-            }
-            
-            
-            return handler.MX;
-            
-        } catch (org.xml.sax.SAXException e) { 
-            System.err.println(e); 
-        } catch (java.io.IOException e) { 
-            System.err.println(e); 
-        }
-        return null;
-    }
+	private Boolean isMainTitle = false;
+	private Boolean isWorkTitle = false;
+	private String currentVoiceName = ""; // crnt = current
+
+	private GraphicInstanceGroup currentGraphicInstanceGroup;
+	private GraphicInstance currentGraphicInstance;
+	private AudioClip currentAudioClip;
+
+	public void startDocument() {
+		this.MX = new MXData();
+	}
+
+	public void startElement(String uri, String localName, String qName, Attributes attributes) {
+		// author saltiamo per ora
+		if (localName.equals("rest") || localName.equals("chord")) {
+			this.MX.spine2voice.put(attributes.getValue("event_ref"), this.currentVoiceName);
+		} else if (localName.equals("voice")) {
+			currentVoiceName = attributes.getValue("voice_item_ref");
+			this.MX.voices.put(currentVoiceName, new Voice(currentVoiceName));
+		} else if (localName.equals("graphic_event")) {
+			int x = new Integer(attributes.getValue("upper_left_x"));
+			int y = new Integer(attributes.getValue("upper_left_y"));
+			int width = new Integer(attributes.getValue("lower_right_x")) - x;
+			int height = new Integer(attributes.getValue("lower_right_y")) - y;
+			Rectangle temporaryRectangle = new Rectangle(x, y, width, height);
+
+			currentGraphicInstance.getSpine2point().put(attributes.getValue("event_ref"), temporaryRectangle);
+			currentGraphicInstance.getTree().insertNewElement(temporaryRectangle);
+			/* crnt_gInstance.tree.insertNewElement(tmpCoord); */
+		} else if (localName.equals("track_event")) {
+			Float num = new Float(attributes.getValue("start_time")) * 100;
+			currentAudioClip.addSpineTime(attributes.getValue("event_ref"), num.intValue());
+		} else if (localName.equals("graphic_instance")) {
+			currentGraphicInstanceGroup.addInstance(new GraphicInstance());
+			currentGraphicInstance.setRelativeImagePath(attributes.getValue("file_name"));
+			// mancano nel nuovo xml spine_start_ref ed end_ref
+		} else if (localName.equals("graphic_instance_group")) {
+			currentGraphicInstanceGroup = this.MX.addGroup(attributes.getValue("description"));
+		} else if (localName.equals("track")) {
+			currentAudioClip = this.MX.addAudioClip(attributes.getValue("file_name"));
+		} else if (localName.equals("main_title")) {
+			this.isMainTitle = true;
+		} else if (localName.equals("work_title")) {
+			this.isWorkTitle = true;
+		}
+	}
+
+	public void endElement(String uri, String localName, String qName) {
+		if (localName.equals("graphic_istance_group")) {
+			this.currentGraphicInstanceGroup = null;
+			this.currentGraphicInstance = null;
+		}
+	}
+
+	public void characters(char[] chars, int start, int length) {
+		if (isMainTitle)
+			this.MX.movement_title = new String(chars);
+		else if (isWorkTitle)
+			this.MX.work_title = new String(chars);
+	}
+
+	public static MXData parse(String path) {
+		try {
+			MXHandler handler = new MXHandler();
+			XMLReader reader = XMLReaderFactory.createXMLReader();
+			
+			reader.setContentHandler(handler);
+			reader.parse(path);
+			handler.MX.baseDir = PathExtension.getParent(path);
+
+			/*
+			 * questa parte prende un audio a caso ed individua spineStart e spineEnd che ci
+			 * servono ma non esistono piu' nel nuovo formato MX
+			 */
+			
+			if (handler.MX.audioClipDict.values().isEmpty()) {
+				return null;
+			}
+			
+			AudioClip audioClip = handler.MX.audioClipDict.values().iterator().next();
+			parseGraphicInstanceSpine(handler.MX.graphic_instance_group.values(), audioClip);
+
+			return handler.MX;
+		} catch (org.xml.sax.SAXException e) {
+			System.err.println(e);
+		} catch (java.io.IOException e) {
+			System.err.println(e);
+		} catch (NullPointerException e) {
+		}
+		return null;
+	}
+
+	private static void parseGraphicInstanceSpine(Collection<GraphicInstanceGroup> graphicInstanceGroupCollection, AudioClip audioClip) {
+		String spineStart, spineEnd;
+		int startTime, endTime, currentTime;
+		
+		for (GraphicInstanceGroup instanceGroup : graphicInstanceGroupCollection) {
+			for (GraphicInstance graphicInstance : instanceGroup.getInstances()) {
+				spineStart = null;
+				spineEnd = null;
+				startTime = 999999999;
+				endTime = -1;
+
+				for (String tmpSpine : graphicInstance.getSpine2point().keySet()) {
+					currentTime = audioClip.getSpine2time().get(tmpSpine);
+
+					if (currentTime < startTime) {
+						startTime = currentTime;
+						spineStart = tmpSpine;
+					} else if (currentTime > endTime) {
+						endTime = currentTime;
+						spineEnd = tmpSpine;
+					}
+				}
+				graphicInstance.setSpineStart(spineStart);
+				graphicInstance.setSpineEnd(spineEnd);
+			}
+		}
+	}
 }

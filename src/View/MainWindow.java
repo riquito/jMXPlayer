@@ -350,7 +350,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		this.partitureSelectionWin.cleanAll();
 
 		// ... and now populate the whole application
-		this.MX = MXHandler.parseIt(path);
+		this.MX = MXHandler.parse(path);
 		if (this.MX == null) {
 			// XXX andrebbe mostrato un message dialog, in cui veniamo informati che
 			// qualcosa e' andato storto (o manca audio o altro motivo)
