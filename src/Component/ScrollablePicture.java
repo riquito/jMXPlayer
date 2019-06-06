@@ -22,97 +22,76 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
 /* ScrollablePicture.java is used by ScrollDemo.java. */
 
-public class ScrollablePicture extends JLabel
-                               implements Scrollable,
-                                          MouseMotionListener {
+public class ScrollablePicture extends JLabel implements Scrollable, MouseMotionListener {
 
-    private int maxUnitIncrement = 1;
-    private boolean missingPicture = false;
+	private int maxUnitIncrement = 1;
+	private boolean missingPicture = false;
 
-    public ScrollablePicture(ImageIcon i, int m) {
-        super(i);
-        if (i == null) {
-            missingPicture = true;
-            setText("No picture found.");
-            setHorizontalAlignment(CENTER);
-            setOpaque(true);
-            setBackground(Color.white);
-        }
-        maxUnitIncrement = m;
+	public ScrollablePicture(ImageIcon icon, int maxUnitIncrement) {
+		super(icon);
 
-        //Let the user scroll by dragging to outside the window.
-        setAutoscrolls(true); //enable synthetic drag events
-        addMouseMotionListener(this); //handle mouse drags
-    }
+		if (icon == null) {
+			missingPicture = true;
+			setText("No picture found.");
+			setHorizontalAlignment(CENTER);
+			setOpaque(true);
+			setBackground(Color.white);
+		}
 
-    //Methods required by the MouseMotionListener interface:
-    public void mouseMoved(MouseEvent e) { }
-    public void mouseDragged(MouseEvent e) {
-        //The user is dragging us, so scroll!
-        Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-        scrollRectToVisible(r);
-    }
+		this.maxUnitIncrement = maxUnitIncrement;
 
-    public Dimension getPreferredSize() {
-        if (missingPicture) {
-            return new Dimension(320, 480);
-        } else {
-            return super.getPreferredSize();
-        }
-    }
+		// Let the user scroll by dragging to outside the window.
+		setAutoscrolls(true); // enable synthetic drag events
+		addMouseMotionListener(this); // handle mouse drags
+	}
 
-    public Dimension getPreferredScrollableViewportSize() {
-        return getPreferredSize();
-    }
+	// Methods required by the MouseMotionListener interface:
+	public void mouseMoved(MouseEvent event) {
+	}
 
-    public int getScrollableUnitIncrement(Rectangle visibleRect,
-                                          int orientation,
-                                          int direction) {
-        //Get the current position.
-        int currentPosition = 0;
-        if (orientation == SwingConstants.HORIZONTAL) {
-            currentPosition = visibleRect.x;
-        } else {
-            currentPosition = visibleRect.y;
-        }
+	public void mouseDragged(MouseEvent event) {
+		// The user is dragging us, so scroll!
+		scrollRectToVisible(new Rectangle(event.getX(), event.getY(), 1, 1));
+	}
 
-        //Return the number of pixels between currentPosition
-        //and the nearest tick mark in the indicated direction.
-        if (direction < 0) {
-            int newPosition = currentPosition -
-                             (currentPosition / maxUnitIncrement)
-                              * maxUnitIncrement;
-            return (newPosition == 0) ? maxUnitIncrement : newPosition;
-        } else {
-            return ((currentPosition / maxUnitIncrement) + 1)
-                   * maxUnitIncrement
-                   - currentPosition;
-        }
-    }
+	public Dimension getPreferredSize() {
+		return missingPicture ? new Dimension(320, 480) : super.getPreferredSize();
+	}
 
-    public int getScrollableBlockIncrement(Rectangle visibleRect,
-                                           int orientation,
-                                           int direction) {
-        if (orientation == SwingConstants.HORIZONTAL) {
-            return visibleRect.width - maxUnitIncrement;
-        } else {
-            return visibleRect.height - maxUnitIncrement;
-        }
-    }
+	public Dimension getPreferredScrollableViewportSize() {
+		return getPreferredSize();
+	}
 
-    public boolean getScrollableTracksViewportWidth() {
-        return false;
-    }
+	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+		// Get the current position.
+		int currentPosition = orientation == SwingConstants.HORIZONTAL ? visibleRect.x : visibleRect.y;
 
-    public boolean getScrollableTracksViewportHeight() {
-        return false;
-    }
+		// Return the number of pixels between currentPosition
+		// and the nearest tick mark in the indicated direction.
+		if (direction < 0) {
+			int newPosition = currentPosition - (currentPosition / maxUnitIncrement) * maxUnitIncrement;
+			return (newPosition == 0) ? maxUnitIncrement : newPosition;
+		} else {
+			return ((currentPosition / maxUnitIncrement) + 1) * maxUnitIncrement - currentPosition;
+		}
+	}
 
-    public void setMaxUnitIncrement(int pixels) {
-        maxUnitIncrement = pixels;
-    }
+	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+		return orientation == SwingConstants.HORIZONTAL ? visibleRect.width - maxUnitIncrement
+				: visibleRect.height - maxUnitIncrement;
+	}
+
+	public boolean getScrollableTracksViewportWidth() {
+		return false;
+	}
+
+	public boolean getScrollableTracksViewportHeight() {
+		return false;
+	}
+
+	public void setMaxUnitIncrement(int pixels) {
+		maxUnitIncrement = pixels;
+	}
 }
-
