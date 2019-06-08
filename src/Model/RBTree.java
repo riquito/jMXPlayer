@@ -17,6 +17,7 @@
  */
 
 
+
 package src.Model;
 
 /**
@@ -33,84 +34,84 @@ public class RBTree extends Tree{
         super();
     }
     
-    private void leftRotate(RBNode x){
-        RBNode y=x.right;
-        x.right=y.left;
+    private void leftRotate(RBNode Main_node){
+        RBNode Child_node=Main_node.right;
+        Main_node.right=Child_node.left;
         
-        if(y.left!=null){
-            y.left.p=x;
+        if(Child_node.left!=null){
+            Child_node.left.position=Main_node;
         }
-        y.p=x.p;
-        if(x.p==null){
-            this.root=y;
+        Child_node.position=Main_node.position;
+        if(Main_node.position==null){
+            this.root=Child_node;
         }
         else {
-            if(x==x.p.left)
-                 x.p.left=y;
-            else x.p.right=y;
+            if(Main_node==Main_node.position.left)
+                 Main_node.position.left=Child_node;
+            else Main_node.position.right=Child_node;
         }
-        y.left=x;
-        x.p=y;
+        Child_node.left=Main_node;
+        Main_node.position=Child_node;
     }
     
-    private void rightRotate(RBNode x){
-        RBNode y=x.left;
-        x.left=y.right;
+    private void rightRotate(RBNode Main_node){
+        RBNode Child_node=Main_node.left;
+        Main_node.left=Child_node.right;
         
-        if(y.right!=null){
-            y.right.p=x;
+        if(Child_node.right!=null){
+            Child_node.right.position=Main_node;
         }
-        y.p=x.p;
-        if(x.p==null){
-            this.root=y;
+        Child_node.position=Main_node.position;
+        if(Main_node.position==null){
+            this.root=Child_node;
         }
         else {
-            if(x==x.p.right)
-                 x.p.right=y;
-            else x.p.left=y;
+            if(Main_node==Main_node.position.right)
+                 Main_node.position.right=Child_node;
+            else Main_node.position.left=Child_node;
         }
-        y.right=x;
-        x.p=y;
+        Child_node.right=Main_node;
+        Main_node.position=Child_node;
     }
     
-    public void insert(RBNode x){
-        super.insert(x);
-        x.color=RBTree.RED;
-        while(x!=this.root && x.p.color==RBTree.BLACK){
-            if(x.p==x.p.p.left){
-                RBNode y=x.p.p.right;
+    public void insert(RBNode Main_node){
+        super.insert(Main_node);
+        Main_node.color=RBTree.RED;
+        while(Main_node!=this.root && Main_node.position.color==RBTree.BLACK){
+            if(Main_node.position==Main_node.position.position.left){
+                RBNode y=Main_node.position.position.right;
                 if (y.color==RBTree.RED){
-                    x.p.color=RBTree.BLACK;
+                    Main_node.position.color=RBTree.BLACK;
                     y.color=RBTree.BLACK;
-                    x.p.p.color=RBTree.RED;
-                    x=x.p.p;
+                    Main_node.position.position.color=RBTree.RED;
+                    Main_node=Main_node.position.position;
                 }
                 else{
-                    if(x==x.p.right){
-                        x=x.p;
-                        this.leftRotate(x);
+                    if(Main_node==Main_node.position.right){
+                        Main_node=Main_node.position;
+                        this.leftRotate(Main_node);
                     }
-                    x.p.color=RBTree.BLACK;
-                    x.p.p.color=RBTree.RED;
-                    this.rightRotate(x.p.p);
+                    Main_node.position.color=RBTree.BLACK;
+                    Main_node.position.position.color=RBTree.RED;
+                    this.rightRotate(Main_node.position.position);
                 }
             }
             else {
-                RBNode y=x.p.p.left;
+                RBNode y=Main_node.position.position.left;
                 if (y.color==RBTree.RED){
-                    x.p.color=RBTree.BLACK;
+                    Main_node.position.color=RBTree.BLACK;
                     y.color=RBTree.BLACK;
-                    x.p.p.color=RBTree.RED;
-                    x=x.p.p;
+                    Main_node.position.position.color=RBTree.RED;
+                    Main_node=Main_node.position.position;
                 }
                 else{
-                    if(x==x.p.left){
-                        x=x.p;
-                        this.rightRotate(x);
+                    if(Main_node==Main_node.position.left){
+                        Main_node=Main_node.position;
+                        this.rightRotate(Main_node);
                     }
-                    x.p.color=RBTree.BLACK;
-                    x.p.p.color=RBTree.RED;
-                    this.leftRotate(x.p.p);
+                    Main_node.position.color=RBTree.BLACK;
+                    Main_node.position.position.color=RBTree.RED;
+                    this.leftRotate(Main_node.position.position);
                 }
             }
         }
