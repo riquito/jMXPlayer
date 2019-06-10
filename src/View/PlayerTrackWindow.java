@@ -42,7 +42,7 @@ import javax.swing.JFrame;
  *
  * @author Riquito
  */
-public class PlayerTrackWindow extends JFrame implements Window {
+public class PlayerTrackWindow extends Window {
 	private Player player;
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -66,10 +66,6 @@ public class PlayerTrackWindow extends JFrame implements Window {
 
 	@Override
 	public void clearAll() {
-	}
-
-	@Override
-	public void addWindowListener(WindowAdapter windowAdapter) {
 	}
 
 	public void setPlayer(Player newPlayer) {

@@ -34,7 +34,7 @@ import src.Model.Voice;
  *
  * @author Riquito
  */
-public class VoicesWindow extends JFrame implements Window {
+public class VoicesWindow extends Window {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private JScrollPane scrollPanel;
 	private JPanel voicesPanelContainer;
@@ -54,10 +54,6 @@ public class VoicesWindow extends JFrame implements Window {
 		voicesPanelContainer.removeAll();
 	}
 
-	@Override
-	public void addWindowListener(WindowAdapter windowAdapter) {
-	}
-	
 	/* Insert the new voices in the window */
 	public void populate(Hashtable<String, Voice> voicesDictionary) {
 		((VoicesPanel) Array.get(this.voicesPanelContainer.getComponents(), 0)).populate(voicesDictionary);

@@ -1,9 +1,10 @@
 package src.View;
 
-import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 
-public interface Window {
-	void render();
-	void clearAll();
-	void addWindowListener(WindowAdapter windowAdapter);
+import javax.swing.JFrame;
+
+public abstract class Window extends JFrame{
+	public abstract void render();
+	public abstract void clearAll();
 }

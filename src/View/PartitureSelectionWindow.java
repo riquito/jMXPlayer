@@ -40,7 +40,7 @@ import java.awt.event.ActionEvent;
  * @author Riquito
  */
 
-public class PartitureSelectionWindow extends JFrame implements Window {
+public class PartitureSelectionWindow extends Window {
 	private Hashtable<JCheckBox, GraphicInstanceGroup> checkBoxHashTable;
 
 	// this attribute contains the graphic groups wich are selected in JCheckBoxes
@@ -97,10 +97,6 @@ public class PartitureSelectionWindow extends JFrame implements Window {
 			this.panel.remove(checkBox);
 		}
 		this.checkBoxHashTable.clear();
-	}
-	
-	@Override
-	public void addWindowListener(WindowAdapter windowAdapter) {
 	}
 
 	private ActionListener checkBoxActionListener = new ActionListener() {

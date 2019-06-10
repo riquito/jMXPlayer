@@ -30,6 +30,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JFrame;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 
 import org.jdesktop.layout.GroupLayout;
 import java.awt.event.ComponentAdapter;
@@ -41,7 +42,7 @@ import java.util.Timer;
  *
  * @author Riquito
  */
-public class PartitureWindow extends JFrame implements Window {
+public class PartitureWindow extends Window {
 	private HighLights marks;
 	private GraphicInstanceGroup graphicGroup;
 	private ImageCanvas mainCanvas;
@@ -69,11 +70,7 @@ public class PartitureWindow extends JFrame implements Window {
 	@Override
 	public void clearAll() {	
 	}
-
-	@Override
-	public void addWindowListener(WindowAdapter windowAdapter) {
-	}
-
+	
 	public ImageCanvas getCanvas() {
 		return this.mainCanvas;
 	}
