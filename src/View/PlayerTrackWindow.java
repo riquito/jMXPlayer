@@ -86,15 +86,15 @@ public class PlayerTrackWindow extends JFrame {
 		return this.slider;
 	}
 
-	public JToggleButton getPlayBtn() {
+	public JToggleButton getPlayButton() {
 		return this.playToggleButton;
 	}
 
-	public JToggleButton getPauseBtn() {
+	public JToggleButton getPauseButton() {
 		return this.pauseToggleButton;
 	}
 
-	public JToggleButton getStopBtn() {
+	public JToggleButton getStopButton() {
 		return this.stopToggleButton;
 	}
 
