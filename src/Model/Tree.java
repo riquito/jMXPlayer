@@ -7,23 +7,23 @@ public class Tree {
         root=null;
     }
     
-    protected void insert(HNode z){
+    protected void insert(HNode Main_node){
         //XXX non considera chiavi esistenti
-        HNode y=null;
-        HNode x=this.root;
-        while (x!=null){
-            y=x;
-            if(z.key.compareTo(x.key)<0)
-                 x=x.left;
-            else x=x.right;
+        HNode Child_node = null;
+        HNode root_node = this.root;
+        while (root_node != null){
+            Child_node=root_node;
+            if(Main_node.key.compareTo(root_node.key)<0)
+                 root_node=root_node.left;
+            else root_node=root_node.right;
         }
-        z.p=y;
-        if (y==null)
-            this.root=z;
+        Main_node.position=Child_node;
+        if (Child_node==null)
+            this.root=Main_node;
         else {
-            if (z.key.compareTo(y.key)<0)
-                y.left=z;
-            else y.right=z;
+            if (Main_node.key.compareTo(Child_node.key)<0)
+                Child_node.left=Main_node;
+            else Child_node.right=Main_node;
         }
     }
     
@@ -31,46 +31,46 @@ public class Tree {
         if (key==null) {
             throw new NullPointerException();
         }
-        HNode x=new HNode(key,value);
-        this.insert(x);
+        HNode Main_node=new HNode(key,value);
+        this.insert(Main_node);
     }
     
     public Object get(Comparable key){
-        HNode x=this.root;
+        HNode Main_node=this.root;
         int comp;
         
-        while (x!=null && (comp=key.compareTo(x.key))!=0)
+        while (Main_node!=null && (comp=key.compareTo(Main_node.key))!=0)
           if (comp<0)
-            x=x.left;
+            Main_node=Main_node.left;
           else
-            x=x.right;
-        return x != null ? x.value : null;
+            Main_node=Main_node.right;
+        return Main_node != null ? Main_node.value : null;
     }
     
     public Object getNearest(Integer key){
-        HNode x=this.root;
+        HNode Main_node=this.root;
         int comp;
         
         Comparable nearest=null;
         int diff=0, tmp_diff=0;
         
-        if (x!=null) {
+        if (Main_node!=null) {
             //creo falso che verra' sicuramente sovrascritto nella prima
             // iterazione, per non aggiungere if per il primo caso
             // nel ciclo while
-            diff=1+Math.abs(key-(Integer)x.key);
+            diff=1+Math.abs(key-(Integer)Main_node.key);
         }
-        while (x!=null && (comp=key.compareTo((Integer)x.key))!=0) {
-            if (diff>(tmp_diff=Math.abs(key-(Integer)x.key))) {
+        while (Main_node!=null && (comp=key.compareTo((Integer)Main_node.key))!=0) {
+            if (diff>(tmp_diff=Math.abs(key-(Integer)Main_node.key))) {
                 diff=tmp_diff;
-                nearest=x.key;
+                nearest=Main_node.key;
             }
             
             if (comp<0)
-                x=x.left;
+                Main_node=Main_node.left;
             else 
-                x=x.right;
+                Main_node=Main_node.right;
         }
-        return x != null ? x.key : nearest;
+        return Main_node != null ? Main_node.key : nearest;
     }
 }

@@ -1,7 +1,7 @@
 package src.Model;
 
 class RBNode extends HNode{
-    RBNode left,right,p;
+    RBNode left,right,position;
     short color;
     
     public RBNode(Comparable key, Object data){
