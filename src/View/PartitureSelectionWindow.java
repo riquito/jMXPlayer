@@ -24,176 +24,148 @@ import javax.swing.JCheckBox;
 
 import src.Controller.PartitureSelectedListener;
 import src.Model.GraphicInstanceGroup;
-
+import javax.swing.event.EventListenerList;
 import java.util.HashSet;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
+import org.jdesktop.layout.GroupLayout;
+import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  *
- * @author  Riquito
+ * @author Riquito
  */
 
+public class PartitureSelectionWindow extends JFrame {
+	private Hashtable<JCheckBox, GraphicInstanceGroup> checkBoxHashTable;
 
-// Declare the event. It must extend EventObject.
-class PartitudeSelectedEvent extends java.util.EventObject {
-    public PartitudeSelectedEvent(Object source) {
-        super(source);
-    }
-}
+	// this attribute contains the graphic groups wich are selected in JCheckBoxes
+	public HashSet<GraphicInstanceGroup> graphicGroupFromCheckBox;
 
-// Declare the listener class. It must extend EventListener.
-// A class must implement this interface to get MyEvents.
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private JPanel panel;
+	private JScrollPane scrollPane;
+	// End of variables declaration//GEN-END:variables
 
+	// Create the listener list
+	protected EventListenerList listenerList = new EventListenerList();
 
-public class PartitureSelectionWindow extends javax.swing.JFrame {
-    private Hashtable<JCheckBox, GraphicInstanceGroup> mxChkbox2groups;
-    
-    //this attribute contains the graphic groups wich are selected in JCheckBoxes
-    public HashSet<GraphicInstanceGroup> selected;
-    
-    // Create the listener list
-    protected javax.swing.event.EventListenerList listenerList =
-        new javax.swing.event.EventListenerList();
-    
-    // This methods allows classes to register for MyEvents
-    public void addMyEventListener(PartitureSelectedListener listener) {
-        listenerList.add(PartitureSelectedListener.class, listener);
-    }
-    
-    // This methods allows classes to unregister for MyEvents
-    public void removeMyEventListener(PartitureSelectedListener listener) {
-        listenerList.remove(PartitureSelectedListener.class, listener);
-    }
-    
-    
-    /** Creates new form PartitureSelectionWindow */
-    public PartitureSelectionWindow() {
-        initComponents();
-        
-        this.jPanel1.setLayout(new GridLayout(0, 1, 10, 20));
-        this.jPanel1.setVisible(true);
-        
-        this.mxChkbox2groups = new Hashtable<JCheckBox, GraphicInstanceGroup>();
-        this.selected = new HashSet<GraphicInstanceGroup>();
-        
-        this.addMyEventListener(new PartitureSelectedListener() {
-            public void on_partiture_selected(GraphicInstanceGroup group, boolean isSelected) {
-                if (isSelected) {
-                	selected.add(group);
-                } else {
-                	selected.remove(group);
-                }
-            }
-        });
-    }
-    
-    /*Clean the window deleting/hiding present checkboxes*/
-    public void cleanAll(){
-        for(JCheckBox tmpBox: this.mxChkbox2groups.keySet()){
-            this.jPanel1.remove(tmpBox);
-        }
-        this.mxChkbox2groups.clear();
-    }
-    
-    /*Insert the new mxdata.group in the window*/
-    /**
-     * 
-     * @param group 
-     */
-    public void addElement(GraphicInstanceGroup group){
-        JCheckBox tmpBox = new JCheckBox(group.getDescription());
-        mxChkbox2groups.put(tmpBox,group);
-        this.jPanel1.add(tmpBox);
-        
-        tmpBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JCheckBox tmpBox = (JCheckBox)evt.getSource();
-                
-                Object[] listeners = listenerList.getListenerList();
-                // Each listener occupies two elements - the first is the listener class
-                // and the second is the listener instance
-                for (int i = 0; i < listeners.length; i += 2) {
-                    if (listeners[i] == PartitureSelectedListener.class) {
-                        ((PartitureSelectedListener) listeners[i+1]).on_partiture_selected(mxChkbox2groups.get(tmpBox), tmpBox.isSelected());
-                    }
-                }
-            }
-        });
-    }
-    
-    /*
-     Check/Uncheck a chkbox wheter the partiture should be visible or not
-     */
-    public void enablePartiture(GraphicInstanceGroup group, boolean isEnabled){
-        //XXX metodo chiaramente "lento". alternative? servono ? (e' solo un'interazione con l'utente)
-        for(JCheckBox chkBox: this.mxChkbox2groups.keySet()){
-            if(this.mxChkbox2groups.get(chkBox)==group) {
-                chkBox.setSelected(isEnabled);
-                break;
-            }
-        }
-        
-    }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	// This methods allows classes to register for MyEvents
+	public void addPartitureSelectedListener(PartitureSelectedListener listener) {
+		listenerList.add(PartitureSelectedListener.class, listener);
+	}
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+	// This methods allows classes to unregister for MyEvents
+	public void removePartitureSelectedListener(PartitureSelectedListener listener) {
+		listenerList.remove(PartitureSelectedListener.class, listener);
+	}
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+	private PartitureSelectedListener partitureSelectedListener = new PartitureSelectedListener() {
+		public void onPartitureSelected(GraphicInstanceGroup group, boolean isSelected) {
+			if (isSelected) {
+				graphicGroupFromCheckBox.add(group);
+			} else {
+				graphicGroupFromCheckBox.remove(group);
+			}
+		}
+	};
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 233, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 332, Short.MAX_VALUE)
-        );
+	/** Creates new form PartitureSelectionWindow */
+	public PartitureSelectionWindow() {
+		initComponents();
 
-        jScrollPane1.setViewportView(jPanel1);
+		this.panel.setLayout(new GridLayout(0, 1, 10, 20));
+		this.panel.setVisible(true);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+		this.checkBoxHashTable = new Hashtable<JCheckBox, GraphicInstanceGroup>();
+		this.graphicGroupFromCheckBox = new HashSet<GraphicInstanceGroup>();
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PartitureSelectionWindow().setVisible(true);
-            }
-        });
-    }
-    
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    // End of variables declaration//GEN-END:variables
-    
+		this.addPartitureSelectedListener(partitureSelectedListener);
+	}
+
+	/* Clean the window deleting/hiding present checkboxes */
+	public void cleanAll() {
+		for (JCheckBox checkBox : this.checkBoxHashTable.keySet()) {
+			this.panel.remove(checkBox);
+		}
+		this.checkBoxHashTable.clear();
+	}
+
+	private ActionListener checkBoxActionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+			JCheckBox actionSourceCheckBox = (JCheckBox) event.getSource();
+
+			Object[] listeners = listenerList.getListenerList();
+			// Each listener occupies two elements - the first is the listener class
+			// and the second is the listener instance
+			for (int i = 0; i < listeners.length; i += 2) {
+				if (listeners[i] instanceof PartitureSelectedListener) {
+					((PartitureSelectedListener) listeners[i + 1]).onPartitureSelected(
+							checkBoxHashTable.get(actionSourceCheckBox), actionSourceCheckBox.isSelected());
+				}
+			}
+		}
+	};
+
+	/* Insert the new mxdata.group in the window */
+	/**
+	 * 
+	 * @param group
+	 */
+	public void addElement(GraphicInstanceGroup group) {
+		JCheckBox newCheckBox = new JCheckBox(group.getDescription());
+		checkBoxHashTable.put(newCheckBox, group);
+		newCheckBox.addActionListener(checkBoxActionListener);
+		this.panel.add(newCheckBox);
+	}
+
+	/*
+	 * Check/Uncheck a chkbox wheter the partiture should be visible or not
+	 */
+	public void enablePartiture(GraphicInstanceGroup group, boolean isEnabled) {
+		// XXX metodo chiaramente "lento". alternative? servono ? (e' solo
+		// un'interazione con l'utente)
+		for (JCheckBox checkBox : this.checkBoxHashTable.keySet()) {
+			if (this.checkBoxHashTable.get(checkBox) == group) {
+				checkBox.setSelected(isEnabled);
+				break;
+			}
+		}
+
+	}
+
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	// <editor-fold defaultstate="collapsed" desc="Generated
+	// Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
+		scrollPane = new JScrollPane();
+		panel = new JPanel();
+
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+		GroupLayout basePanelLayout = new GroupLayout(panel);
+		basePanelLayout.setHorizontalGroup(
+				basePanelLayout.createParallelGroup(GroupLayout.LEADING).add(0, 233, Short.MAX_VALUE));
+		basePanelLayout.setVerticalGroup(
+				basePanelLayout.createParallelGroup(GroupLayout.LEADING).add(0, 332, Short.MAX_VALUE));
+		panel.setLayout(basePanelLayout);
+
+		scrollPane.setViewportView(panel);
+
+		GroupLayout layout = new GroupLayout(getContentPane());
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(layout.createSequentialGroup()
+				.addContainerGap().add(scrollPane, GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE).addContainerGap()));
+		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(layout.createSequentialGroup()
+				.addContainerGap().add(scrollPane, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE).addContainerGap()));
+		getContentPane().setLayout(layout);
+
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
 }

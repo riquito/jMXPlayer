@@ -96,8 +96,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		this.partitureWindows = new Vector<PartitureWindow>();
 
 		this.partitureSelectionWin = new PartitureSelectionWindow();
-		this.partitureSelectionWin.addMyEventListener(new PartitureSelectedListener() {
-			public void on_partiture_selected(GraphicInstanceGroup group, boolean isSelected) {
+		this.partitureSelectionWin.addPartitureSelectedListener(new PartitureSelectedListener() {
+			public void onPartitureSelected(GraphicInstanceGroup group, boolean isSelected) {
 				// System.out.println(group.description);
 				// System.out.println("selected = "+isSelected);
 
