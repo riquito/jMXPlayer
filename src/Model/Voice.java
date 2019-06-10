@@ -20,7 +20,7 @@ package src.Model;
 
 import java.awt.Color;
 
-import src.Util.CustomColorList;
+import src.Util.CustomColor;
 
 public class Voice {
 	private String name;
@@ -29,7 +29,7 @@ public class Voice {
 
 	public Voice(String voiceName) {
 		this.setName(voiceName);
-		this.setColor(CustomColorList.getColor());
+		this.setColor(CustomColor.getNextColor());
 	}
 
 	public void setVisible(boolean isVisible) {
