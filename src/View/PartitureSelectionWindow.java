@@ -32,6 +32,7 @@ import javax.swing.WindowConstants;
 import org.jdesktop.layout.GroupLayout;
 import javax.swing.JFrame;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.ActionEvent;
 
 /**
@@ -39,7 +40,7 @@ import java.awt.event.ActionEvent;
  * @author Riquito
  */
 
-public class PartitureSelectionWindow extends JFrame {
+public class PartitureSelectionWindow extends JFrame implements Window {
 	private Hashtable<JCheckBox, GraphicInstanceGroup> checkBoxHashTable;
 
 	// this attribute contains the graphic groups wich are selected in JCheckBoxes
@@ -75,6 +76,10 @@ public class PartitureSelectionWindow extends JFrame {
 
 	/** Creates new form PartitureSelectionWindow */
 	public PartitureSelectionWindow() {
+	}
+	
+	@Override
+	public void render() {
 		initComponents();
 
 		this.panel.setLayout(new GridLayout(0, 1, 10, 20));
@@ -86,12 +91,16 @@ public class PartitureSelectionWindow extends JFrame {
 		this.addPartitureSelectedListener(partitureSelectedListener);
 	}
 
-	/* Clean the window deleting/hiding present checkboxes */
-	public void cleanAll() {
+	@Override
+	public void clearAll() {
 		for (JCheckBox checkBox : this.checkBoxHashTable.keySet()) {
 			this.panel.remove(checkBox);
 		}
 		this.checkBoxHashTable.clear();
+	}
+	
+	@Override
+	public void addWindowListener(WindowAdapter windowAdapter) {
 	}
 
 	private ActionListener checkBoxActionListener = new ActionListener() {

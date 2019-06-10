@@ -22,9 +22,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import org.jdesktop.layout.GroupLayout;
 import javax.swing.WindowConstants;
+
+import java.awt.event.WindowAdapter;
 import java.lang.reflect.Array;
 import java.util.Hashtable;
-
+import javax.swing.JFrame;
 import src.Component.VoicesPanel;
 import src.Model.Voice;
 
@@ -32,7 +34,7 @@ import src.Model.Voice;
  *
  * @author Riquito
  */
-public class VoicesWindow extends javax.swing.JFrame {
+public class VoicesWindow extends JFrame implements Window {
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private JScrollPane scrollPanel;
 	private JPanel voicesPanelContainer;
@@ -40,14 +42,22 @@ public class VoicesWindow extends javax.swing.JFrame {
 
 	/** Creates new form VoicesWindow */
 	public VoicesWindow() {
+	}
+
+	@Override
+	public void render() {
 		initComponents();
 	}
 
-	/* Clean the window deleting/hiding present voices */
-	public void cleanAll() {
+	@Override
+	public void clearAll() {
 		voicesPanelContainer.removeAll();
 	}
 
+	@Override
+	public void addWindowListener(WindowAdapter windowAdapter) {
+	}
+	
 	/* Insert the new voices in the window */
 	public void populate(Hashtable<String, Voice> voicesDictionary) {
 		((VoicesPanel) Array.get(this.voicesPanelContainer.getComponents(), 0)).populate(voicesDictionary);

@@ -39,7 +39,6 @@ import javax.media.GainControl;
 import javax.media.Manager;
 import javax.media.Player;
 import javax.media.Time;
-import javax.swing.Timer;
 
 import src.Component.HighLights;
 import src.Controller.MXHandler;
@@ -49,19 +48,19 @@ import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
 import src.Model.MXData;
 import src.Model.Voice;
-import src.Util.RectangleExtension;
 
 import javax.media.RealizeCompleteEvent;
 import javax.media.ControllerListener;
 import javax.media.ControllerEvent;
 import javax.media.EndOfMediaEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
  * @author Riccardo Galli
  */
-public class MainWindow extends javax.swing.JFrame implements ActionListener {
-
+public class MainWindow extends JFrame implements ActionListener, Window {
 	private MXData MX;
 	private AudioClip currentAudioClip = null;
 
@@ -75,19 +74,28 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	private long currentStep = 0;
 
 	private String lastSeenSpine;
-
-	private boolean was_playing;
+	private boolean wasPlaying;
 	private boolean audioSliderDragged;
 
-	private VoicesWindow voicesWin;
+	private VoicesWindow voicesWindow;
 	private PlayerTrackWindow trackWindow;
+	private PartitureSelectionWindow partitureSelectionWindow;
 	private JSlider trackSlider;
-
-	private PartitureSelectionWindow partitureSelectionWin;
-
 	private Vector<PartitureWindow> partitureWindows;
 
+	private WindowAdapter closingWindowAdapter = new WindowAdapter() {
+		public void windowClosing(WindowEvent event) {
+			event.getWindow().setVisible(false);
+			partitureToggleBtn.setSelected(false);
+		}
+	};
+	
 	public MainWindow() {
+	}
+	
+
+	@Override
+	public void render() {
 		initComponents();
 
 		this.timer = new Timer(this.timerDelay, this);
@@ -95,8 +103,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 		this.partitureWindows = new Vector<PartitureWindow>();
 
-		this.partitureSelectionWin = new PartitureSelectionWindow();
-		this.partitureSelectionWin.addPartitureSelectedListener(new PartitureSelectedListener() {
+		this.partitureSelectionWindow = new PartitureSelectionWindow();
+		partitureSelectionWindow.render();
+		this.partitureSelectionWindow.addPartitureSelectedListener(new PartitureSelectedListener() {
 			public void onPartitureSelected(GraphicInstanceGroup group, boolean isSelected) {
 				// System.out.println(group.description);
 				// System.out.println("selected = "+isSelected);
@@ -109,44 +118,36 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 				}
 			}
 		});
-
-		this.partitureSelectionWin.addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent evt) {
-				evt.getWindow().setVisible(false);
-				partitureToggleBtn.setSelected(false);
-			}
-		});
+		this.partitureSelectionWindow.addWindowListener(closingWindowAdapter);
 
 		trackWindow = new PlayerTrackWindow();
+		trackWindow.render();
 		trackSlider = trackWindow.getSlider();
 
-		trackWindow.addWindowListener(new java.awt.event.WindowAdapter() {
-			public void windowClosing(java.awt.event.WindowEvent evt) {
-				evt.getWindow().setVisible(false);
-				trackToggleBtn.setSelected(false);
+		trackWindow.addWindowListener(closingWindowAdapter);
+
+		trackWindow.getPlayButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				ButtonModel a = ((JToggleButton) event.getSource()).getModel();
+				onTrackWindowToggleButtonClicked("play");
 			}
 		});
 
-		trackWindow.getPlayBtn().addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				on_trackWindowToggleBtn_clicked("play");
+		trackWindow.getPauseButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				onTrackWindowToggleButtonClicked("pause");
 			}
 		});
 
-		trackWindow.getPauseBtn().addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				on_trackWindowToggleBtn_clicked("pause");
+		trackWindow.getStopButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				onTrackWindowToggleButtonClicked("stop");
 			}
 		});
 
-		trackWindow.getStopBtn().addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				on_trackWindowToggleBtn_clicked("stop");
-			}
-		});
-
-		voicesWin = new VoicesWindow();
-		voicesWin.addWindowListener(new java.awt.event.WindowAdapter() {
+		voicesWindow = new VoicesWindow();
+		voicesWindow.render();
+		voicesWindow.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				evt.getWindow().setVisible(false);
 				voicesToggleBtn.setSelected(false);
@@ -178,11 +179,19 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			}
 		});
 
-		this.was_playing = false;
+		this.wasPlaying = false;
 		this.audioSliderDragged = false;
-
+		this.setVisible(true);
 		// XXX per prove
 		// this.loadMX("C:\\MX_media\\Aida\\aida.xml");
+	}
+
+	@Override
+	public void clearAll() {
+	}
+	
+	@Override
+	public void addWindowListener(WindowAdapter windowAdapter) {
 	}
 
 	private void genPartitureWindows() {
@@ -203,7 +212,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			window.addWindowListener(new java.awt.event.WindowAdapter() {
 				public void windowClosing(java.awt.event.WindowEvent evt) {
 					evt.getWindow().setVisible(false);
-					partitureSelectionWin.enablePartiture(group, false);
+					partitureSelectionWindow.enablePartiture(group, false);
 				}
 			});
 
@@ -269,30 +278,30 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
-	private void on_trackWindowToggleBtn_clicked(String btnType) {
+	private void onTrackWindowToggleButtonClicked(String buttonType) {
 		if (this.player == null)
 			return;
 
-		boolean is_starting = this.player.getState() != this.player.Started;
+		boolean isStarting = this.player.getState() != this.player.Started;
 
-		if (btnType.compareTo("play") == 0) {
-			if (is_starting) {
+		if (buttonType.equals("play")) {
+			if (isStarting) {
 				this.playerStart(true);
 			}
-		} else if (btnType.compareTo("pause") == 0) {
-			if (!is_starting) {
+		} else if (buttonType.equals("pause")) {
+			if (!isStarting) {
 				this.playerStart(false);
 			}
-		} else if (btnType.compareTo("stop") == 0) {
-			if (!is_starting) {
+		} else if (buttonType.equals("stop")) {
+			if (!isStarting) {
 				this.playerStart(false); /* stop player and timer */
 			}
 
 			this.trackSlider.setValue(0);
 			this.player.setMediaTime(new Time(0));
 
-			for (PartitureWindow win : partitureWindows) {
-				win.getMarks().hideAllLabel();
+			for (PartitureWindow window : partitureWindows) {
+				window.getMarks().hideAllLabel();
 			}
 
 			// XXX questo non serve più ora che ci sono partiture multiple
@@ -305,16 +314,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	}
 
 	public void showOpenMXDialog() {
-		JFileChooser fc = new JFileChooser();
-		int returnVal = fc.showOpenDialog(this);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = fc.getSelectedFile();
+		JFileChooser fileChooser = new JFileChooser();
+		
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
 			// This is where a real application would open the file.
 			this.loadMX(file.getPath());
-		} else {
-			// user closed the dialog
 		}
-
 	}
 
 	public void loadMX(String path) {
@@ -340,14 +346,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 		this.audioCombo.removeAllItems();
 
-		this.voicesWin.cleanAll();
+		this.voicesWindow.clearAll();
 
 		this.playerList.removeAllElements();
 
 		this.trackWindow.selectButton("stop");
 		this.trackWindow.getSlider().setValue(0);
 
-		this.partitureSelectionWin.cleanAll();
+		this.partitureSelectionWindow.clearAll();
 
 		// ... and now populate the whole application
 		this.MX = MXHandler.parse(path);
@@ -358,7 +364,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		}
 
 		for (String key : this.MX.getGraphicInstanceGroup().keySet()) {
-			this.partitureSelectionWin.addElement(this.MX.getGraphicInstanceGroup().get(key));
+			this.partitureSelectionWindow.addElement(this.MX.getGraphicInstanceGroup().get(key));
 		}
 
 		for (String key : this.MX.getAudioClipDictionary().keySet()) {
@@ -371,7 +377,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			win.loadFirstPage();
 		}
 
-		this.voicesWin.populate(MX.getVoices());
+		this.voicesWindow.populate(MX.getVoices());
 
 		this.loadMusic();
 		this.trackWindow.setPlayer(this.player);
@@ -380,16 +386,16 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		for (ActionListener obj : audioComboLnrs)
 			this.audioCombo.addActionListener(obj);
 
-		this.trackWindow.getPlayBtn().setEnabled(true);
-		this.trackWindow.getPauseBtn().setEnabled(true);
-		this.trackWindow.getStopBtn().setEnabled(true);
+		this.trackWindow.getPlayButton().setEnabled(true);
+		this.trackWindow.getPauseButton().setEnabled(true);
+		this.trackWindow.getStopButton().setEnabled(true);
 		this.trackWindow.getSlider().setEnabled(true);
 
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	public void on_endOfPlayerTime_event() {
-		this.on_trackWindowToggleBtn_clicked("stop");
+		this.onTrackWindowToggleButtonClicked("stop");
 		this.trackWindow.selectButton("stop");
 	}
 
@@ -483,7 +489,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	// <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
-
 		jPanel2 = new javax.swing.JPanel();
 		jPanel1 = new javax.swing.JPanel();
 		audioCombo = new javax.swing.JComboBox();
@@ -626,7 +631,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 	private void partitureToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_partitureToggleBtnActionPerformed
 		// this.imageWin.setVisible(this.partitureToggleBtn.isSelected());
-		this.partitureSelectionWin.setVisible(this.partitureToggleBtn.isSelected());
+		this.partitureSelectionWindow.setVisible(this.partitureToggleBtn.isSelected());
 	}// GEN-LAST:event_partitureToggleBtnActionPerformed
 
 	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -638,7 +643,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	}// GEN-LAST:event_trackToggleBtnActionPerformed
 
 	private void voicesToggleBtnActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_voicesToggleBtnActionPerformed
-		this.voicesWin.setVisible(this.voicesToggleBtn.isSelected());
+		this.voicesWindow.setVisible(this.voicesToggleBtn.isSelected());
 	}// GEN-LAST:event_voicesToggleBtnActionPerformed
 
 	private void trackSliderMouseReleased(java.awt.event.MouseEvent evt) {
@@ -664,17 +669,17 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 		this.audioSliderDragged = false;
 
-		if (this.was_playing) {
+		if (this.wasPlaying) {
 			System.out.println("chiamo da mouseReleased playerStart(true)");
 			this.playerStart(true);
 		}
-		this.was_playing = false;
+		this.wasPlaying = false;
 
 	}
 
 	private void trackSliderMousePressed(java.awt.event.MouseEvent evt) {
-		this.was_playing = this.player.getState() == this.player.Started;
-		if (this.was_playing) {
+		this.wasPlaying = this.player.getState() == this.player.Started;
+		if (this.wasPlaying) {
 			System.out.println("chiamo playerStart(false)");
 			this.playerStart(false); // we stop the player
 		}
@@ -897,17 +902,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String args[]) {
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new MainWindow().setVisible(true);
-			}
-		});
-	}
-
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JComboBox audioCombo;
 	private javax.swing.JLabel jLabel1;
@@ -922,5 +916,4 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	private javax.swing.JToggleButton trackToggleBtn;
 	private javax.swing.JToggleButton voicesToggleBtn;
 	// End of variables declaration//GEN-END:variables
-
 }

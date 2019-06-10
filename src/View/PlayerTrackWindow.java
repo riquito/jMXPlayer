@@ -32,6 +32,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.WindowConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.ActionEvent;
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
@@ -41,7 +42,7 @@ import javax.swing.JFrame;
  *
  * @author Riquito
  */
-public class PlayerTrackWindow extends JFrame {
+public class PlayerTrackWindow extends JFrame implements Window {
 	private Player player;
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
@@ -56,7 +57,19 @@ public class PlayerTrackWindow extends JFrame {
 	 * Creates new form PlayerTrackWindow
 	 */
 	public PlayerTrackWindow() {
+	}
+
+	@Override
+	public void render() {
 		initComponents();
+	}
+
+	@Override
+	public void clearAll() {
+	}
+
+	@Override
+	public void addWindowListener(WindowAdapter windowAdapter) {
 	}
 
 	public void setPlayer(Player newPlayer) {
@@ -149,7 +162,7 @@ public class PlayerTrackWindow extends JFrame {
 		stopToggleButton.setSelected(true);
 		stopToggleButton.setEnabled(false);
 		stopToggleButton.addActionListener(buttonActionListener);
-		
+
 		this.buttonGroup.add(this.playToggleButton);
 		this.buttonGroup.add(this.pauseToggleButton);
 		this.buttonGroup.add(this.stopToggleButton);
@@ -166,9 +179,9 @@ public class PlayerTrackWindow extends JFrame {
 						.add(slider, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE).addContainerGap()));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.LEADING)
 				.add(layout.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.add(layout.createParallelGroup(GroupLayout.LEADING).add(pauseToggleButton).add(playToggleButton)
-								.add(stopToggleButton).add(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))));
+						.add(layout.createParallelGroup(GroupLayout.LEADING).add(pauseToggleButton)
+								.add(playToggleButton).add(stopToggleButton).add(slider, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))));
 		getContentPane().setLayout(layout);
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
@@ -178,8 +191,9 @@ public class PlayerTrackWindow extends JFrame {
 			onToggleButtonClicked(event);
 		}
 	};
-	
+
 	private void onToggleButtonClicked(ActionEvent event) {// GEN-FIRST:event_on_audioBtn_clicked
 		this.buttonGroup.setSelected(((JToggleButton) event.getSource()).getModel(), true);
 	}// GEN-LAST:event_on_audioBtn_clicked
+
 }

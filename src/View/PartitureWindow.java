@@ -29,6 +29,8 @@ import src.Component.ImageCanvas;
 import javax.swing.JLayeredPane;
 import javax.swing.JFrame;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+
 import org.jdesktop.layout.GroupLayout;
 import java.awt.event.ComponentAdapter;
 import javax.swing.WindowConstants;
@@ -39,7 +41,7 @@ import java.util.Timer;
  *
  * @author Riquito
  */
-public class PartitureWindow extends JFrame {
+public class PartitureWindow extends JFrame implements Window {
 	private HighLights marks;
 	private GraphicInstanceGroup graphicGroup;
 	private ImageCanvas mainCanvas;
@@ -57,7 +59,19 @@ public class PartitureWindow extends JFrame {
 	public PartitureWindow(HighLights marks, GraphicInstanceGroup group) {
 		this.graphicGroup = group;
 		this.marks = marks;
+	}
+	
+	@Override
+	public void render() {
 		initComponents();
+	}
+
+	@Override
+	public void clearAll() {	
+	}
+
+	@Override
+	public void addWindowListener(WindowAdapter windowAdapter) {
 	}
 
 	public ImageCanvas getCanvas() {
