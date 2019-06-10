@@ -36,6 +36,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.ActionEvent;
 import org.jdesktop.layout.GroupLayout;
 import org.jdesktop.layout.LayoutStyle;
+
+import src.Component.ToggleButton;
+
 import javax.swing.JFrame;
 
 /**
@@ -130,9 +133,13 @@ public class PlayerTrackWindow extends Window {
 	private void initComponents() {
 		buttonGroup = new ButtonGroup();
 		slider = new JSlider();
-		playToggleButton = new JToggleButton();
-		pauseToggleButton = new JToggleButton();
-		stopToggleButton = new JToggleButton();
+		
+//      playToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Play24.gif")));
+		playToggleButton = new ToggleButton.Builder().text("play").actionListener(buttonActionListener).build();
+//      pauseToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Pause24.gif")));
+		pauseToggleButton = new ToggleButton.Builder().text("pause").actionListener(buttonActionListener).build();
+//      stopToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Stop24.gif")));
+		stopToggleButton = new ToggleButton.Builder().text("stop").select(true).actionListener(buttonActionListener).build();
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setTitle("Current track");
@@ -142,22 +149,6 @@ public class PlayerTrackWindow extends Window {
 		slider.setPaintTicks(true);
 		slider.setValue(0);
 		slider.setEnabled(false);
-
-//        playToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Play24.gif")));
-		playToggleButton.setText("play");
-		playToggleButton.setEnabled(false);
-		playToggleButton.addActionListener(buttonActionListener);
-
-//        pauseToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Pause24.gif")));
-		pauseToggleButton.setText("pause");
-		pauseToggleButton.setEnabled(false);
-		pauseToggleButton.addActionListener(buttonActionListener);
-
-//        stopToggleBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/mainFrame/Resources/Stop24.gif")));
-		stopToggleButton.setText("stop");
-		stopToggleButton.setSelected(true);
-		stopToggleButton.setEnabled(false);
-		stopToggleButton.addActionListener(buttonActionListener);
 
 		this.buttonGroup.add(this.playToggleButton);
 		this.buttonGroup.add(this.pauseToggleButton);
