@@ -188,11 +188,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	private void genPartitureWindows() {
 		HighLights marks;
 
-		for (String grpKey : this.MX.graphic_instance_group.keySet()) {
+		for (String grpKey : this.MX.getGraphicInstanceGroup().keySet()) {
 
 			// creo un'istanza di evidenziatori per ogni partitura
 			marks = new HighLights();
-			final GraphicInstanceGroup group = this.MX.graphic_instance_group.get(grpKey);
+			final GraphicInstanceGroup group = this.MX.getGraphicInstanceGroup().get(grpKey);
 			final PartitureWindow window = new PartitureWindow(marks, group);
 			this.partitureWindows.add(window);
 
@@ -357,12 +357,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			return;
 		}
 
-		for (String key : this.MX.graphic_instance_group.keySet()) {
-			this.partitureSelectionWin.addElement(this.MX.graphic_instance_group.get(key));
+		for (String key : this.MX.getGraphicInstanceGroup().keySet()) {
+			this.partitureSelectionWin.addElement(this.MX.getGraphicInstanceGroup().get(key));
 		}
 
-		for (String key : this.MX.audioClipDict.keySet()) {
-			this.audioCombo.addItem(this.MX.audioClipDict.get(key).getRelativePath());
+		for (String key : this.MX.getAudioClipDictionary().keySet()) {
+			this.audioCombo.addItem(this.MX.getAudioClipDictionary().get(key).getRelativePath());
 		}
 		this.audioCombo.setSelectedIndex(0);
 
@@ -371,7 +371,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			win.loadFirstPage();
 		}
 
-		this.voicesWin.populate(MX.voices);
+		this.voicesWin.populate(MX.getVoices());
 
 		this.loadMusic();
 		this.trackWindow.setPlayer(this.player);
@@ -399,11 +399,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			Player newPlayer;
 			// GainControl gainControl;
 
-			this.currentAudioClip = this.MX.audioClipDict.get(this.audioCombo.getSelectedItem());
+			this.currentAudioClip = this.MX.getAudioClipDictionary().get(this.audioCombo.getSelectedItem());
 
 			for (int i = 0; i < this.audioCombo.getItemCount(); i++) {
 				newPlayer = Manager.createPlayer(
-						new File(this.MX.audioClipDict.get(this.audioCombo.getItemAt(i)).getFileAudioPath()).toURI()
+						new File(this.MX.getAudioClipDictionary().get(this.audioCombo.getItemAt(i)).getFileAudioPath()).toURI()
 								.toURL());
 				newPlayer.addControllerListener(new ControllerListener() {
 					public synchronized void controllerUpdate(ControllerEvent event) {
@@ -754,7 +754,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		int index = this.audioCombo.getSelectedIndex();
 		this.player = this.playerList.get(index);
 
-		this.currentAudioClip = this.MX.audioClipDict.get(this.audioCombo.getSelectedItem());
+		this.currentAudioClip = this.MX.getAudioClipDictionary().get(this.audioCombo.getSelectedItem());
 
 		System.out.println("Passo a " + this.currentAudioClip.getFileAudioPath());
 		System.out.println(" ||| lastseen spine " + lastSeenSpine);
@@ -860,14 +860,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			for (int i = 0, length = tmpSpines.size(); i < length; i++) {
 				// check if the voice must be shown
 				this.lastSeenSpine = (String) tmpSpines.get(i);
-				voiceName = this.MX.spine2voice.get(lastSeenSpine);
+				voiceName = this.MX.getSpine2voice().get(lastSeenSpine);
 				if (voiceName == null) {
 					// XXX capire perche' esistono questi risultati. errore nel MX?
 					// come puo uno spine event non essere legato ad una voce?
 					System.out.println("SPINE2VOICE fallita ! -> " + " spina: " + lastSeenSpine);
 					continue;
 				}
-				tmpVoice = this.MX.voices.get(voiceName);
+				tmpVoice = this.MX.getVoices().get(voiceName);
 
 				for (PartitureWindow win : partitureWindows) {
 					if (!win.isVisible())

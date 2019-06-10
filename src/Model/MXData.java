@@ -27,35 +27,80 @@ import src.Util.PathExtension;
 import java.util.Collections;
 
 public class MXData implements Serializable {
-	public String work_title;
-	public String movement_title;
-	public String author;
-	public String baseDir;
+	private String workTitle;
+	private String movementTitle;
+	private String author;
+	private String baseDirectory;
 
 	// collezioni di dati fondamentali, accessibili a tutti
-	public Hashtable<String, GraphicInstanceGroup> graphic_instance_group;
-	public Hashtable<String, AudioClip> audioClipDict;
-	public Hashtable<String, String> spine2voice;
-	public Hashtable<String, Voice> voices;
+	private Hashtable<String, GraphicInstanceGroup> graphicInstanceGroup;
+	private Hashtable<String, AudioClip> audioClipDictionary;
+	private Hashtable<String, String> spine2voice;
+	private Hashtable<String, Voice> voices;
 
 	public MXData() {
-		this.graphic_instance_group = new Hashtable<String, GraphicInstanceGroup>();
-		this.audioClipDict = new Hashtable<String, AudioClip>();
+		this.graphicInstanceGroup = new Hashtable<String, GraphicInstanceGroup>();
+		this.audioClipDictionary = new Hashtable<String, AudioClip>();
 		this.spine2voice = new Hashtable<String, String>();
 		this.voices = new Hashtable<String, Voice>();
 	}
 
-	public GraphicInstanceGroup addGroup(String description) {
-		GraphicInstanceGroup group = new GraphicInstanceGroup(description);
-		this.graphic_instance_group.put(description, group);
-		return group;
+	public void addGroup(GraphicInstanceGroup group) {
+		this.getGraphicInstanceGroup().put(group.getDescription(), group);
 	}
 
 	public AudioClip addAudioClip(String relativePath) {
 		AudioClip clip = new AudioClip();
 		clip.setRelativePath(relativePath);
-		this.audioClipDict.put(relativePath, clip);
+		this.getAudioClipDictionary().put(relativePath, clip);
 		return clip;
 	}
+	
+	public void addSpine2Voice(String key, String voiceName) {
+		this.spine2voice.put(key, voiceName);
+	}
+	
+	public void addVoice(String key, Voice voice) {
+		this.voices.put(key, voice);
+	}
 
+	public String getMovementTitle() {
+		return movementTitle;
+	}
+
+	public void setMovementTitle(String movementTitle) {
+		this.movementTitle = movementTitle;
+	}
+
+	public String getWorkTitle() {
+		return workTitle;
+	}
+
+	public void setWorkTitle(String workTitle) {
+		this.workTitle = workTitle;
+	}
+
+	public String getBaseDirectory() {
+		return baseDirectory;
+	}
+
+	public void setBaseDirectory(String baseDirectory) {
+		this.baseDirectory = baseDirectory;
+	}
+
+	public Hashtable<String, GraphicInstanceGroup> getGraphicInstanceGroup() {
+		return graphicInstanceGroup;
+	}
+
+	public Hashtable<String, AudioClip> getAudioClipDictionary() {
+		return audioClipDictionary;
+	}
+
+	public Hashtable<String, Voice> getVoices() {
+		return voices;
+	}
+
+	public Hashtable<String, String> getSpine2voice() {
+		return spine2voice;
+	}
 }

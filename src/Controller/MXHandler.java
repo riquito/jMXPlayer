@@ -50,10 +50,10 @@ public class MXHandler extends DefaultHandler {
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 		// author saltiamo per ora
 		if (localName.equals("rest") || localName.equals("chord")) {
-			this.MX.spine2voice.put(attributes.getValue("event_ref"), this.currentVoiceName);
+			this.MX.addSpine2Voice(attributes.getValue("event_ref"), this.currentVoiceName);
 		} else if (localName.equals("voice")) {
 			currentVoiceName = attributes.getValue("voice_item_ref");
-			this.MX.voices.put(currentVoiceName, new Voice(currentVoiceName));
+			this.MX.addVoice(currentVoiceName, new Voice(currentVoiceName));
 		} else if (localName.equals("graphic_event")) {
 			int x = new Integer(attributes.getValue("upper_left_x"));
 			int y = new Integer(attributes.getValue("upper_left_y"));
@@ -72,7 +72,8 @@ public class MXHandler extends DefaultHandler {
 			currentGraphicInstance.setRelativeImagePath(attributes.getValue("file_name"));
 			// mancano nel nuovo xml spine_start_ref ed end_ref
 		} else if (localName.equals("graphic_instance_group")) {
-			currentGraphicInstanceGroup = this.MX.addGroup(attributes.getValue("description"));
+			currentGraphicInstanceGroup = new GraphicInstanceGroup(attributes.getValue("description"));
+			this.MX.addGroup(currentGraphicInstanceGroup);
 		} else if (localName.equals("track")) {
 			currentAudioClip = this.MX.addAudioClip(attributes.getValue("file_name"));
 		} else if (localName.equals("main_title")) {
@@ -91,9 +92,9 @@ public class MXHandler extends DefaultHandler {
 
 	public void characters(char[] chars, int start, int length) {
 		if (isMainTitle)
-			this.MX.movement_title = new String(chars);
+			this.MX.setMovementTitle(new String(chars));
 		else if (isWorkTitle)
-			this.MX.work_title = new String(chars);
+			this.MX.setWorkTitle(new String(chars));
 	}
 
 	public static MXData parse(String path) {
@@ -103,19 +104,19 @@ public class MXHandler extends DefaultHandler {
 			
 			reader.setContentHandler(handler);
 			reader.parse(path);
-			handler.MX.baseDir = PathExtension.getParent(path);
+			handler.MX.setBaseDirectory(PathExtension.getParent(path));
 
 			/*
 			 * questa parte prende un audio a caso ed individua spineStart e spineEnd che ci
 			 * servono ma non esistono piu' nel nuovo formato MX
 			 */
 			
-			if (handler.MX.audioClipDict.values().isEmpty()) {
+			if (handler.MX.getAudioClipDictionary().values().isEmpty()) {
 				return null;
 			}
 			
-			AudioClip audioClip = handler.MX.audioClipDict.values().iterator().next();
-			parseGraphicInstanceSpine(handler.MX.graphic_instance_group.values(), audioClip);
+			AudioClip audioClip = handler.MX.getAudioClipDictionary().values().iterator().next();
+			parseGraphicInstanceSpine(handler.MX.getGraphicInstanceGroup().values(), audioClip);
 
 			return handler.MX;
 		} catch (org.xml.sax.SAXException e) {
