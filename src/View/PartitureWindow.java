@@ -197,9 +197,9 @@ public class PartitureWindow extends JFrame {
 
 		final HighLights cpMarks = this.marks;
 		this.mainCanvas.addCanvasResizeEventListener(new CanvasResizedListener() {
-			public void on_canvas_resized(int x_offset, int y_offset, double ratio) {
-				cpMarks.setXAdjust(x_offset);
-				cpMarks.setYAdjust(y_offset);
+			public void onCanvasResized(int xOffset, int yOffset, double ratio) {
+				cpMarks.setXAdjust(xOffset);
+				cpMarks.setYAdjust(yOffset);
 				cpMarks.setScaling(ratio);
 			}
 		});
