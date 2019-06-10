@@ -26,193 +26,190 @@ import src.Controller.CanvasResizedListener;
 import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
 import src.Component.ImageCanvas;
+import javax.swing.JLayeredPane;
+import javax.swing.JFrame;
+import java.awt.event.ComponentEvent;
+import org.jdesktop.layout.GroupLayout;
+import java.awt.event.ComponentAdapter;
+import javax.swing.WindowConstants;
+import java.util.TimerTask;
+import java.util.Timer;
 
 /**
  *
- * @author  Riquito
+ * @author Riquito
  */
-public class PartitureWindow extends javax.swing.JFrame {
-    private HighLights marks;
-    private GraphicInstanceGroup graphicGroup;
-    private ImageCanvas mainCanvas;
-    private BufferedImage currentImage = null;
-    private BufferedImage nextImage = null;
-    private GraphicInstance currentGraphicInstance;
+public class PartitureWindow extends JFrame {
+	private HighLights marks;
+	private GraphicInstanceGroup graphicGroup;
+	private ImageCanvas mainCanvas;
+	private BufferedImage currentImage = null;
+	private BufferedImage nextImage = null;
+	private GraphicInstance currentGraphicInstance;
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLayeredPane jLayeredPane2;
-    // End of variables declaration//GEN-END:variables
-    
-    
-    /**
-     * Creates new form PartitureWindow
-     */
-    public PartitureWindow(HighLights marks, GraphicInstanceGroup group) {
-        initComponents();
-        
-        this.marks = marks;
-        this.graphicGroup = group;
-        
-        this.mainCanvas = new ImageCanvas();
-        this.jLayeredPane2.add(this.mainCanvas,0);
-        
-        this.marks.setBackgroundPanel(this.jLayeredPane2);
-        
-        final HighLights cpMarks = this.marks;
-        this.mainCanvas.addCanvasResizeEventListener(new CanvasResizedListener(){
-            public void on_canvas_resized(int x_offset, int y_offset, double ratio) {
-                cpMarks.setXAdjust(x_offset);
-                cpMarks.setYAdjust(y_offset);
-                cpMarks.setScaling(ratio);
-            }
-        });
-    }
-    
-    public ImageCanvas getCanvas(){
-        return this.mainCanvas;
-    }
-    
-    public void resetPrefetching() {
-        this.nextImage = null;
-    }
-    
-    public GraphicInstanceGroup getGroup() {
+	// Variables declaration - do not modify//GEN-BEGIN:variables
+	private JLayeredPane layeredPane;
+	// End of variables declaration//GEN-END:variables
+
+	/**
+	 * Creates new form PartitureWindow
+	 */
+	public PartitureWindow(HighLights marks, GraphicInstanceGroup group) {
+		this.graphicGroup = group;
+		this.marks = marks;
+		initComponents();
+	}
+
+	public ImageCanvas getCanvas() {
+		return this.mainCanvas;
+	}
+
+	public void resetPrefetching() {
+		this.nextImage = null;
+	}
+
+	public GraphicInstanceGroup getGroup() {
 		return graphicGroup;
 	}
-    
-    public HighLights getMarks() {
-    	return marks;
-    }
-    
-    /**
-     *legge un'immagine da un filepath
-     *@imgPath è una path relativa alla directory Resources
-     */
-    private BufferedImage readImage(String imgPath) {
-        BufferedImage image = null;
-        
-        try {
-            image = ImageIO.read(new File(imgPath));
-        }
-        catch (IOException e) {
-            System.err.println("Errore nel caricamento dell'immagine di uno spartito");
-            e.printStackTrace();
-        }
-        return image;
-    }
-    
-    
-    
-    private void prefetchNextPage(GraphicInstance instance) {
-    	if (instance != null) {
-            BufferedImage image = readImage(instance.getImagePath());
-            this.nextImage = image;
-            //System.out.println("Prefetch di "+gi.getImagePath());
-    	}
-    }
-    
-    
-    /*
-     load the first image in the MXData group
-     */
-    public void loadFirstPage(){
-        this.loadPage(this.graphicGroup.getInstances().get(0));
-    }
-    
-    /*
-     redraw the image, checking for window dimension
-    */
-    private void refreshCanvas(){
-        this.mainCanvas.setBounds(0, 0, this.jLayeredPane2.getWidth(), this.jLayeredPane2.getHeight());
-        this.mainCanvas.setImage(this.currentImage);
-    }
-    
-    /*
-     load a partiture page
-     */
-    private void loadPage(GraphicInstance instance) {
-        this.setCurrentGraphicInstance(instance);
-        
-        if (this.nextImage == null) {
-            this.currentImage = this.readImage(instance.getImagePath());
-    	} else {	
-            this.currentImage = this.nextImage;
-            this.nextImage = null;
-    	}
+
+	public HighLights getMarks() {
+		return marks;
+	}
+
+	/**
+	 * legge un'immagine da un filepath
+	 * 
+	 * @imgPath è una path relativa alla directory Resources
+	 */
+	private BufferedImage readImage(String imgPath) {
+		BufferedImage image = null;
+
+		try {
+			image = ImageIO.read(new File(imgPath));
+		} catch (IOException e) {
+			System.err.println("Errore nel caricamento dell'immagine di uno spartito");
+			e.printStackTrace();
+		}
+		return image;
+	}
+
+	private void prefetchNextPage(GraphicInstance instance) {
+		if (instance != null) {
+			BufferedImage image = readImage(instance.getImagePath());
+			this.nextImage = image;
+			// System.out.println("Prefetch di "+gi.getImagePath());
+		}
+	}
+
+	/*
+	 * load the first image in the MXData group
+	 */
+	public void loadFirstPage() {
+		this.loadPage(this.graphicGroup.getInstances().get(0));
+	}
+
+	/*
+	 * redraw the image, checking for window dimension
+	 */
+	private void refreshCanvas() {
+		this.mainCanvas.setBounds(0, 0, this.layeredPane.getWidth(), this.layeredPane.getHeight());
+		this.mainCanvas.setImage(this.currentImage);
+	}
+
+	/*
+	 * load a partiture page
+	 */
+	private void loadPage(GraphicInstance instance) {
+		this.setCurrentGraphicInstance(instance);
+
+		if (this.nextImage == null) {
+			this.currentImage = this.readImage(instance.getImagePath());
+		} else {
+			this.currentImage = this.nextImage;
+			this.nextImage = null;
+		}
 
 		this.refreshCanvas();
-	    
-	    this.marks.hideAllLabel();
-	    
-	   	//fare delayed fetch della prossima se esistente
-		java.util.Timer delayedPrefetch = new java.util.Timer(); 
-    
+
+		this.marks.hideAllLabel();
+
+		// fare delayed fetch della prossima se esistente
+		Timer delayedPrefetch = new Timer();
+
 		final GraphicInstance next = graphicGroup.getNextInstance();
-		
-		delayedPrefetch.schedule(new java.util.TimerTask() { 
+
+		delayedPrefetch.schedule(new TimerTask() {
 			public void run() {
 				prefetchNextPage(next);
 			}
-		} ,800);
-    }
-    
-    /*
-     load the next image in the MXData group, if any
-     */
-    public void loadNextPage() {
-        if (this.graphicGroup.getNextInstance() != null) {
-            this.loadPage(this.graphicGroup.getNextInstance());
-        }
-    }
-    
-    /*
-     load the previous image in the MXData group, if any
-     */
-    public void loadPrevPage() {
-        if (this.graphicGroup.getPreviousInstance() != null) {
-            this.loadPage(this.graphicGroup.getPreviousInstance());
-        }
-    }
-    
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-        jLayeredPane2 = new javax.swing.JLayeredPane();
+		}, 800);
+	}
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                formComponentResized(evt);
-            }
-        });
+	/*
+	 * load the next image in the MXData group, if any
+	 */
+	public void loadNextPage() {
+		if (this.graphicGroup.getNextInstance() != null) {
+			this.loadPage(this.graphicGroup.getNextInstance());
+		}
+	}
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jLayeredPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 803, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jLayeredPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+	/*
+	 * load the previous image in the MXData group, if any
+	 */
+	public void loadPrevPage() {
+		if (this.graphicGroup.getPreviousInstance() != null) {
+			this.loadPage(this.graphicGroup.getPreviousInstance());
+		}
+	}
+	
+	private ComponentAdapter componentResizeEventAdapter = new ComponentAdapter() {
+		public void componentResized(ComponentEvent event) {
+			formComponentResized(event);
+		}
+	};
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
+	 */
+	// <editor-fold defaultstate="collapsed" desc="Generated
+	// Code">//GEN-BEGIN:initComponents
+	private void initComponents() {
+		layeredPane = new JLayeredPane();
 
-    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        this.refreshCanvas();
-    }//GEN-LAST:event_formComponentResized
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addComponentListener(componentResizeEventAdapter);
+
+		GroupLayout layout = new GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(layout.createSequentialGroup()
+				.addContainerGap().add(layeredPane, GroupLayout.DEFAULT_SIZE, 803, Short.MAX_VALUE).addContainerGap()));
+		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(GroupLayout.TRAILING,
+				layout.createSequentialGroup().addContainerGap()
+						.add(layeredPane, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE).addContainerGap()));
+
+		this.mainCanvas = new ImageCanvas();
+		this.layeredPane.add(this.mainCanvas, 0);
+
+		this.marks.setBackgroundPanel(this.layeredPane);
+
+		final HighLights cpMarks = this.marks;
+		this.mainCanvas.addCanvasResizeEventListener(new CanvasResizedListener() {
+			public void on_canvas_resized(int x_offset, int y_offset, double ratio) {
+				cpMarks.setXAdjust(x_offset);
+				cpMarks.setYAdjust(y_offset);
+				cpMarks.setScaling(ratio);
+			}
+		});
+
+		pack();
+	}// </editor-fold>//GEN-END:initComponents
+
+	private void formComponentResized(ComponentEvent event) {// GEN-FIRST:event_formComponentResized
+		this.refreshCanvas();
+	}// GEN-LAST:event_formComponentResized
 
 	public GraphicInstance getCurrentGraphicInstance() {
 		return currentGraphicInstance;
