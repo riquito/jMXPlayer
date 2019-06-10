@@ -377,7 +377,7 @@ public class RTree {
 
 				}
 
-				else if (n.rect[i] != null) {
+				else if (n.rectangle[i] != null) {
 
 					al.add(n.getRect(i));
 
@@ -419,7 +419,7 @@ public class RTree {
 
 				}
 
-				else if (n.rect[i] != null) {
+				else if (n.rectangle[i] != null) {
 
 					r = n.getRect(i);
 
@@ -453,7 +453,7 @@ public class RTree {
 
 				}
 
-				else if (n.rect[i] != null) {
+				else if (n.rectangle[i] != null) {
 
 					System.out.println("\nLivello : " + l + " padre :" + n.getIndex());
 
@@ -490,7 +490,7 @@ public class RTree {
 
 				}
 
-				else if (n.rect[i] != null) {
+				else if (n.rectangle[i] != null) {
 
 					// controllo se la foglia contiene il punto
 
@@ -532,7 +532,7 @@ public class RTree {
 
 				}
 
-				else if (n.rect[i] != null) {
+				else if (n.rectangle[i] != null) {
 
 					if (l == c)
 						al.add(n.getRect(i));
@@ -846,390 +846,6 @@ public class RTree {
 				AdjustTree(padre);
 
 		}
-
-	}
-
-}
-
-class Node {
-
-	protected int capacity; // massimo numero di rettangoli inseribili nel nodo
-
-	protected int numRect; // numero dei rettangoli inseriti nel nodo
-
-	Node parent; // puntatore al nodo padre
-
-	int indexParent; // indice dell'array del padre che punta al nodo in questione
-
-	Rectangle[] rect; // array dei rettangoli contenuti nel nodo
-
-	Node[] childNode; // array dei figli del nodo, contenuti nei rettangoli corrispondenti
-
-	// verifica se il nodo è una foglia
-
-	public boolean isLeaf() {
-
-		if (childNode[0] == null)
-			return true;
-
-		else
-			return false;
-
-	}
-
-	// imposta il padre
-
-	public void setParent(Node n) {
-
-		this.parent = n;
-
-	}
-
-	// restituisce il padre
-
-	public Node getParent() {
-
-		return this.parent;
-
-	}
-
-	// imposta l'indice nell'array del padre
-
-	public void setIndex(int i) {
-
-		this.indexParent = i;
-
-	}
-
-	// restituisce l'indice nell'array del padre
-
-	public int getIndex() {
-
-		return this.indexParent;
-
-	}
-
-	// imposta un rettangolo
-
-	public void setRect(int i, Rectangle r) {
-
-		this.rect[i] = r;
-
-	}
-
-	// cancella un rettangolo
-
-	public void delRectangle(int i) {
-
-		rect[i] = null;
-
-		childNode[i] = null;
-
-		numRect--;
-
-	}
-
-	// imposta il figlio i-esimo del nodo
-
-	public void setChild(int i, Node n) {
-
-		this.childNode[i] = n;
-
-	}
-
-	// costruttore
-
-	public Node(int l) {
-
-		capacity = l;
-
-		numRect = 0;
-
-		indexParent = -1;
-
-		parent = null;
-
-		rect = new Rectangle[capacity];
-
-		childNode = new Node[capacity];
-
-		for (int i = 0; i < capacity; i++) {
-
-			childNode[i] = null;
-
-			rect[i] = null;
-
-		}
-
-	}
-
-	// inserisce un rettangolo r nella foglia scelta,
-
-	// n è il nodo figlio dipendente dal rettangolo che si va a inserire
-
-	public Node insertNewRectangle(Rectangle r, Node n) {
-
-		Node newNode;
-
-		if (this.numRect < this.capacity) {
-
-			this.rect[numRect] = r; // inserisco il nuovo rettangolo
-
-			this.childNode[numRect] = n; // inserisco il nuovo figlio relativo al rettangolo
-
-			if (n != null) {
-
-				n.setIndex(numRect);
-
-				n.setParent(this);
-
-			}
-
-			this.numRect++;
-
-			newNode = null;
-
-		}
-
-		else {
-
-			newNode = split(r, n);// eseguo lo splitting
-
-		}
-
-		return newNode;
-
-	}
-
-	// prende un rettangolo r che ha come figlio il nodo n e lo
-
-	// inserisce nel nodo corrente sdoppiandolo
-
-	protected Node split(Rectangle r, Node n) {
-
-		Node addedNode;
-
-		Rectangle rectTmp, rectMin, rectPrec;
-
-		Dimension size, minSize;
-
-		double area, minArea;
-
-		int min = 0; // indice del figlio scelto per inserire il rettangolo
-
-		int y;
-
-		addedNode = new Node(this.capacity); // creo il nuovo nodo
-
-		addedNode.insertNewRectangle(r, n); // inserisco subito il nuovo rettangolo
-
-		// ora lego il nuovo nodo con il figlio del rettangolo che sto
-
-		// inserendo
-
-		if (n != null) {
-
-			n.setParent(addedNode);
-
-			n.setIndex(0);
-
-		}
-
-		// inizializzo i valori in base al primo rettangolo
-
-		rectMin = r.union(rect[0]);
-
-		minSize = rectMin.getSize();
-
-		minArea = minSize.getHeight() * minSize.getWidth();
-
-		rectPrec = r;
-
-		// poi verifico che non ce ne siano altri piu' adatti
-
-		// il primo ciclo mi serve per contare quanti rettangoli devo aggiungere
-
-		for (int k = 1; k < ((numRect + 1) / 2); k++) {
-
-			// il secondo ciclo controlla quale è il rettangolo più adatto da aggiungere
-
-			for (int i = 1; i < numRect; i++) {
-
-				// faccio la prova con un rettangolo che non sia
-
-				// gia' stato tolto
-
-				if (rect[i] != null) {
-
-					rectTmp = rectPrec.union(rect[i]);
-
-					// rectTmp e' il rettangolo che contiene i due rettangoli
-
-					size = rectTmp.getSize();
-
-					area = size.getHeight() * size.getWidth();
-
-					if (area < minArea) {
-
-						// poiche' ho trovato una coppia migliore,
-
-						// aggiorno i dati del rettangolo minimo
-
-						minArea = area;
-
-						min = i;
-
-						rectMin = rectTmp;
-
-					}
-
-				}
-
-			}
-
-			rectPrec = rectMin;
-
-			// min e' l'indice del rettangolo da mettere insieme a r
-
-			// inserisco subito il nuovo rettangolo
-
-			addedNode.insertNewRectangle(this.rect[min], this.getChild(min));
-
-			// elimino il rettangolo dal vecchio nodo
-
-			rect[min] = null;
-
-			// faccio ora crescere il mio rettangolo temporaneo,
-
-			// aggiorno quindi il rettangolo precedente
-
-			y = 0;
-
-			while (y < numRect && rect[y] == null) {
-
-				y++;
-
-			}
-
-			// quando esco dal while ho trovato l'indice di un rettangolo valido
-
-			// oppure sono finiti i rettangoli
-
-			// ricalcolo il rettangolo minimo iniziale
-
-			rectMin = rectMin.union(rect[y]);
-
-			minSize = rectMin.getSize();
-
-			minArea = minSize.getHeight() * minSize.getWidth();
-
-			min = y;
-
-		}
-
-		// ora devo risistemare il nodo corrente,
-
-		// togliendo i buchi che si sono formati nell'array dei rettangoli
-
-		for (int j = 0; j < (numRect / 2) + 1; j++) {
-
-			if (rect[j] == null) {
-
-				for (int h = j + 1; h < numRect; h++) {
-
-					if (rect[h] != null) {
-
-						// sposto un rettangolo valido in h
-
-						// nel buco trovato in j
-
-						rect[j] = rect[h];
-
-						rect[h] = null;
-
-						childNode[j] = childNode[h];
-
-						if (childNode[j] != null)
-							childNode[j].setIndex(j);
-
-						childNode[h] = null;
-
-						// esco dal ciclo
-
-						h = numRect + 1;
-
-					}
-
-				}
-
-			}
-
-		}
-
-		numRect = (numRect / 2) + 1;
-
-		return addedNode;
-
-	}
-
-	public void FindLeaf(Rectangle r, Integer l, ArrayList res) {
-
-		if (childNode[0] == null) {
-
-			for (int i = 0; i < numRect; i++) {
-
-				if (r.equals(rect[i])) {
-
-					// riempio la lista delle foglie che contengono il rettangolo r
-
-					res.add(this);
-
-					res.add(l);
-
-				}
-
-			}
-
-		} else {
-
-			for (int i = 0; i < numRect; i++) {
-
-				if (rect[i].contains(r)) {
-
-					// scendo di livello
-
-					if (childNode[i] != null)
-						childNode[i].FindLeaf(r, new Integer(l.intValue() + 1), res);
-
-				}
-
-			}
-
-		}
-
-	}
-
-	// restituisce il numero di rettangoli del nodo
-
-	public int numRect() {
-
-		return this.numRect;
-
-	}
-
-	// restituisce il rettangolo i-esimo
-
-	public Rectangle getRect(int i) {
-
-		return rect[i];
-
-	}
-
-	// restituisce il nodo figlio i-esimo
-
-	public Node getChild(int i) {
-
-		return childNode[i];
 
 	}
 
