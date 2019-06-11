@@ -19,5 +19,17 @@ public class CustomColorTest {
 	public void getNextColorTest() {
 		assertTrue(CustomColor.getNextColor() instanceof Color);
 	}
-
+	
+	/**
+	* Purpose: Get Current Alpha Value 
+	* Input: 
+	* Expected:
+	*
+	*	return SUCCESS 
+	*	 0 <= getAlpha() <= 255
+	*/
+	@Test
+	public void getAlphaTest() {
+		assertTrue(CustomColor.getAlpha() >= 0 || CustomColor.getAlpha() <= 255);
+	}
 }
