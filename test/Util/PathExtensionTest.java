@@ -70,4 +70,19 @@ public class PathExtensionTest {
 		assertEquals(PathExtension.join("/user/bin/", "images/flowers/rose1.jpeg"),
 				"/user/bin/images/flowers/rose1.jpeg");
 	}
+	
+	/**
+	 * Purpose: get parent path from path
+	 * Input: "/user/bin/images/flowers/rose1.jpeg"
+	 * Expected: ""/user/bin/images/flowers"
+	 *
+	 * return SUCCESS
+	 * 
+	 * "/user/bin/images/flowers" from "/user/bin/images/flowers/rose1.jpeg"
+	 */
+	@Test
+	public void getparentPathTest() {
+		assertEquals(PathExtension.getParent("/user/bin/images/flowers/rose1.jpeg"),
+				"/user/bin/images/flowers");
+	}
 }
