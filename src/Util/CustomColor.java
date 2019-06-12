@@ -26,10 +26,10 @@ public class CustomColor {
 	}
 
 	private static void nextIndex() {
+		index = index + 1;
+		
 		if (index == colorList.length) {
 			index = 0;
-		} else {
-			index = index + 1;
 		}
 	}
 
