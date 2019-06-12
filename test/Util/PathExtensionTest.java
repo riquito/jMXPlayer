@@ -55,4 +55,19 @@ public class PathExtensionTest {
 				"/user/bin/images/flowers/rose1.jpeg");
 	}
 	
+	/**
+	 * Purpose: Path Join Test with weird base path
+	 * Input: "/user/bin/", "images/flowers/rose1.jpeg"
+	 * Expected: "/user/bin/images/flowers/rose1.jpeg"
+	 *
+	 * return SUCCESS
+	 * 
+	 * "/user/bin/" + "images/flowers/rose1.jpeg"
+	 * "/user/bin/images/flowers/rose1.jpeg"
+	 */
+	@Test
+	public void pathJoinTestWithWeirdBasePath3() {
+		assertEquals(PathExtension.join("/user/bin/", "images/flowers/rose1.jpeg"),
+				"/user/bin/images/flowers/rose1.jpeg");
+	}
 }
