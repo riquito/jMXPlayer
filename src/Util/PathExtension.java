@@ -33,7 +33,7 @@ public class PathExtension {
      */
     public static String join(String basePath, String fileName) {
         if (basePath.endsWith("/") || basePath.endsWith("\\") || basePath.endsWith(":")) {
-        	basePath = basePath.substring(0, basePath.length() - 2);
+        	basePath = basePath.substring(0, basePath.length() - 1);
         }
 
         return basePath + File.separator + fileName;
