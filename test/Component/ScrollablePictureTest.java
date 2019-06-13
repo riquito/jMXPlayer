@@ -84,7 +84,19 @@ public class ScrollablePictureTest {
 		assertEquals(scrollablePicture.getPreferredSize(), new Dimension(320, 480));
 	}
 	
+	/**
+	 * Purpose: get Preferred Scrollable View port Size
+	 * Input: getPreferredScrollableViewportSize()
+	 * Expected: 
+	 * 		return Success
+	 * 		getPreferredScrollableViewportSize() == new Dimension(320, 480)
+	 */
+	@Test
+	public void testgetPreferredScrollableViewportSize() {
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
 
+		assertEquals(scrollablePicture.getPreferredScrollableViewportSize(), new Dimension(320, 480));
+	}
 	
 	
 	
