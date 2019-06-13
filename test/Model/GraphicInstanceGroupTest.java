@@ -30,6 +30,23 @@ public class GraphicInstanceGroupTest {
 	}
 	
 	/**
+	 * Purpose: set description of graphic instance group 
+	 * Input: Hello World!
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * description -> Hello World!
+	 * True 
+	 */
+	@Test
+	public void testSetDescription() {
+		String newDescription = "Hello World!";
+		group.setDescription(newDescription);
+		assertEquals(group.getDescription(), newDescription);
+	}
+	
+	/**
 	 * Purpose: get graphic instance group size  
 	 * Input:
 	 * Expected: True
