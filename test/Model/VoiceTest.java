@@ -2,13 +2,34 @@ package test.Model;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
-public class VoiceTest {
+import src.Model.Voice;
 
+public class VoiceTest {
+	Voice voice;
+	final String voiceName = "hello";
+
+	@Before
+	public void setUp() {
+		voice = new Voice(voiceName);
+	}
+	
+	/**
+	 * Purpose: set visible to voice  
+	 * Input: changedVisible = true
+	 * Expected: true
+	 *
+	 * return SUCCESS
+	 * 
+	 * visible of voice -> changedVisible
+	 */
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testSetVisible() {
+		boolean changedVisible = true;
+		voice.setVisible(changedVisible);
+		assertEquals(changedVisible, voice.isVisible());
 	}
 
 }
