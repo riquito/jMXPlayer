@@ -17,6 +17,10 @@ public class GraphicInstanceGroup {
         this.instances.setSize(maxSize);
     }
     
+    public int getGroupSize() {
+    	return this.instances.size();
+    }
+    
     public Vector<GraphicInstance> getInstances() {
     	return instances;
     }
