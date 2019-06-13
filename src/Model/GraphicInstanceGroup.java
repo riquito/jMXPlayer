@@ -26,10 +26,6 @@ public class GraphicInstanceGroup {
     }
     
     public void addInstance(GraphicInstance instance){
-    	if (instances.capacity() == instances.size()) {
-    		instances.setSize(instances.size() * 2);
-    	}
-    	
     	this.instances.add(instance);
     }
 
