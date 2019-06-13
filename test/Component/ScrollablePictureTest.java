@@ -161,6 +161,24 @@ public class ScrollablePictureTest {
 		assertEquals(scrollablePicture.getScrollableBlockIncrement(rectangle, orientation, direction), 0);
 	}
 	
+	/**
+	 * Purpose: getScrollableUnitIncrement
+	 * Input: getScrollableUnitIncrement()
+	 * Expected: 
+	 * 		return Failure
+	 * 		I can't control SwingConstants.HORIZONTAL
+	 */
+	@Test
+	public void testgetScrollableUnitIncrement() {
+		
+		Rectangle rectangle = new Rectangle(1, 1, 1, 1);
+		int orientation=1; 
+		int direction=-1;
+		
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+		
+		assertEquals(scrollablePicture.getScrollableUnitIncrement(rectangle, orientation, direction), 0);
+	}
 	
 	
 }
