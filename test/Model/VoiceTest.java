@@ -20,6 +20,20 @@ public class VoiceTest {
 	}
 	
 	/**
+	 * Purpose: is visible at voice  
+	 * Input: 
+	 * Expected: not Null
+	 *
+	 * return SUCCESS
+	 * 
+	 * isVisible of voice is false -> not Null 
+	 */
+	@Test
+	public void testIsVisible() {
+		assertNotNull(voice.isVisible());
+	}
+	
+	/**
 	 * Purpose: set visible to voice  
 	 * Input: changedVisible = true
 	 * Expected: true
