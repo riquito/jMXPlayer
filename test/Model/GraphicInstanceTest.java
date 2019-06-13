@@ -182,4 +182,20 @@ public class GraphicInstanceTest {
 		assertNull(instance.getSpineStart());
 	}
 	
+	/**
+	 * Purpose: Set spineStart at graphic instance 
+	 * Input: new RTree -> instance.spineStart
+	 * Expected: Equals
+	 *
+	 * return SUCCESS
+	 * 
+	 * new spineStart -> instance.spineStart
+	 * Equals
+	 */
+	@Test
+	public void testSetSpineStart() {
+		String spineStart= "abcd";
+		instance.setSpineStart(spineStart);
+		assertEquals(spineStart, instance.getSpineStart());
+	}
 }
