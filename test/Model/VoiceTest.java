@@ -2,8 +2,6 @@ package test.Model;
 
 import static org.junit.Assert.*;
 
-import java.awt.Color;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,20 +59,6 @@ public class VoiceTest {
 	public void testSetName() {
 		voice.setName("world");
 		assertEquals("world", voice.getName());
-	}
-
-	/**
-	 * Purpose: get color of voice  
-	 * Input: 
-	 * Expected: instance of Color 
-	 *
-	 * return SUCCESS
-	 * 
-	 * instance of Color
-	 */
-	@Test
-	public void testGetColor() {
-		assertTrue(voice.getColor() instanceof Color);
 	}
 
 	
