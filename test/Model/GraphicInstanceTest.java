@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.Before;
 
 import src.Model.GraphicInstance;
+import src.Model.RTree;
+import src.Model.Tree;
 
 public class GraphicInstanceTest {
 	GraphicInstance instance;
@@ -111,6 +113,23 @@ public class GraphicInstanceTest {
 	@Test
 	public void testGetTree() {
 		assertNotNull(instance.getTree());
+	}
+	
+	/**
+	 * Purpose: Set Tree at graphic instance 
+	 * Input: new RTree -> instance.tree
+	 * Expected: Equals
+	 *
+	 * return SUCCESS
+	 * 
+	 * new RTree -> instance.tree
+	 * Equals
+	 */
+	@Test
+	public void testSetTree() {
+		RTree newTree = new RTree(6);
+		instance.setTree(newTree);
+		assertEquals(newTree, instance.getTree());
 	}
 
 }
