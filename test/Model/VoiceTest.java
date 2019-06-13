@@ -46,6 +46,20 @@ public class VoiceTest {
 		assertEquals(voiceName, voice.getName());
 	}
 
+	/**
+	 * Purpose: set name of voice  
+	 * Input: world
+	 * Expected: 
+	 *
+	 * return SUCCESS
+	 * 
+	 * hello -> world
+	 */
+	@Test
+	public void testSetName() {
+		voice.setName("world");
+		assertEquals("world", voice.getName());
+	}
 
 	
 }
