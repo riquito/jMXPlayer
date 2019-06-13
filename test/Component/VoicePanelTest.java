@@ -105,6 +105,20 @@ public class VoicePanelTest {
 		
 	}
 	
-	
+	/**
+	 * Purpose: remove all items
+	 * Input: removeAllItems()
+	 * Expected:
+	 * 		return SUCCESS
+	 * 		voicepanel == NULL
+	 * 
+	 * NULL 
+	 */
+	@Test
+	public void testremoveAllItems() {
+		voicepanel = new VoicesPanel();
+		voicepanel.removeAllItems();
+		assertNotNull(voicepanel);
+	}
 	
 }
