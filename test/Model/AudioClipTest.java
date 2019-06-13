@@ -30,4 +30,22 @@ public class AudioClipTest {
 		assertTrue(audioClip.getSpine2time() instanceof Hashtable);
 	}
 	
+	/**
+	 * Purpose: add (spine = "abcd" : time = "30") key value  
+	 * Input: "abcd", 30
+	 * Expected: NotNull
+	 *
+	 * return SUCCESS
+	 * 
+	 * add (spine = "abcd" : time = "30") key value
+	 * NotNull 
+	 */
+	@Test
+	public void testAddSpineTime() {
+		String spine = "abcd";
+		int time = 30;
+		audioClip.addSpineTime(spine, time);
+		assertNotNull(audioClip.getSpine2time().containsKey(spine));
+	}
+
 }
