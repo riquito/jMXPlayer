@@ -25,4 +25,18 @@ public class ResourceLoaderTest {
 		ResourceLoader.getResourceUrl("jjalbang.today/jj237.jpg", "");
 	}
 	
+	/**
+	 * Purpose: get absolute path resource url  
+	 * Input: "http://jjalbang.today/jj237.jpg"
+	 * Expected: URL("http://jjalbang.today/jj237.jpg")
+	 *
+	 * return SUCCESS
+	 * 
+	 * "http://jjalbang.today/jj237.jpg" => URL("http://jjalbang.today/jj237.jpg")
+	 */
+	@Test
+	public void resourceLoaderTestWithAbsolutePath() throws MalformedURLException {
+		assertEquals(new URL("http://jjalbang.today/jj237.jpg"),
+				ResourceLoader.getResourceUrl("http://jjalbang.today/jj237.jpg", ""));
+	}
 }
