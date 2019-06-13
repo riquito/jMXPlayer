@@ -115,5 +115,24 @@ public class AudioClipTest {
 		audioClip.addSpineTime(spine, time);
 		assertNotNull(audioClip.getSpines(time));
 	}
+	
+	/**
+	 * Purpose: get Time matched Spine <add (spine = "abcd" : time = "30") key value>
+	 * Input: spine = "abcd"
+	 * Expected: NotNull
+	 *
+	 * return SUCCESS
+	 * 
+	 * add (spine = "abcd" : time = "30") key value
+	 * getTime matched Spine
+	 * NotNull 
+	 */
+	@Test
+	public void testGetTime() {
+		String spine = "abcd";
+		int time = 30;
+		audioClip.addSpineTime(spine, time);
+		assertEquals(audioClip.getTime(spine), time);
+	}
 
 }
