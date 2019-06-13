@@ -104,7 +104,7 @@ public class GraphicInstanceGroupTest {
 	 * return SUCCESS
 	 * 
 	 * instance * 11 -> GraphicInstanceGroup.instances
-	 * size of instances is equal 20 
+	 * size of instances is equal 11 
 	 * Equals
 	 */
 	@Test
