@@ -68,4 +68,21 @@ public class ImageCanvasTest {
 		assertNotNull(imageCanvas);
 	}
 	
+	/**
+	 * Purpose: remove CanvasResizeEventListener
+	 * Input: 
+	 * Expected: not Null
+	 * 		return SUCCESS
+	 * 		imageCanvas -> not null
+	 * 		
+	 *
+	 */
+	@Test
+	public void testremoveCanvasResizeEventListener() {
+		CanvasResizedListener listener = null;
+		imageCanvas = new ImageCanvas();
+		imageCanvas.removeCanvasResizeEventListener(listener);
+		assertNotNull(imageCanvas);
+	}
+	
 }
