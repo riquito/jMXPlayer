@@ -78,6 +78,23 @@ public class AudioClipTest {
 	public void testGetTimeRBTree() {
 		assertTrue(audioClip.getTimeRBTree() instanceof Tree);
 	}
-
+	
+	/**
+	 * Purpose: check setTimeRBTree() well added Tree 
+	 * Input: new Tree()
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * new Tree -> audioClip.timeRBTree
+	 * audioClip.timeRBTree is equals new Tree
+	 * True
+	 */
+	@Test
+	public void testSetTimeRBTree() {
+		Tree tree = new Tree();
+		audioClip.setTimeRBTree(tree);
+		assertEquals(audioClip.getTimeRBTree(), tree);
+	}
 
 }
