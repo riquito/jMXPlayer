@@ -3,6 +3,8 @@ package test.Component;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import javax.swing.JLayeredPane;
+
 import org.junit.Test;
 
 import src.Component.HighLights;
@@ -58,11 +60,27 @@ public class HighLightsTest {
 	 * 		return SUCCESS
 	 * 		
 	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testsetgetScaling() {
 		highLights = new HighLights();
 		highLights.setScaling(1.1);
 		assertEquals(1.1, highLights.getScaling(), 1.1);
 	}
+	
+	/**
+	 * Purpose: set BackgroundPanel
+	 * Input: setBackgroundPanel -> panel
+	 * Expected:not Null
+	 * 		return SUCCESS
+	 * 		highLights -> not null
+	 * 		
+	 */
+	@Test
+	public void testsetBackgroundPanel() {
+		JLayeredPane panel = null;
+		highLights = new HighLights();
+		highLights.setBackgroundPanel(panel);
+		assertNotNull(highLights);
+	}
+
 }
