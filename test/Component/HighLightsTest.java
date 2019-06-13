@@ -2,6 +2,7 @@ package test.Component;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -13,6 +14,8 @@ import org.junit.Test;
 
 import src.Component.HighLights;
 import src.Component.SpinedLabel;
+import src.Exception.AllParameterNullException;
+import src.Model.Voice;
 
 
 public class HighLightsTest {
@@ -103,6 +106,30 @@ public class HighLightsTest {
 		assertNotNull(highLights);
 	}
 	
-	
+	/**
+	 * Purpose: append Label
+	 * Input: appendLabel(rectangle, voice)
+	 * Expected:
+	 * 		return failure 
+	 *  	I can't touch SpinedLabel that in the appendLabel function so it's failure
+	 *   		
+	 */
+	@Test
+	public void testappendLabel() {
+
+		Rectangle rectangle = new Rectangle(-100, -100, 1, 1);
+		Voice voice = new Voice("Test");
+		Voice nullVoice=null;
+		Rectangle nullRectangle = null;
+		try {
+			highLights = new HighLights();
+			highLights.appendLabel(nullRectangle, nullVoice);
+		} catch (AllParameterNullException e) {}
+		
+		try {
+			highLights = new HighLights();
+			highLights.appendLabel(rectangle, voice);
+		} catch (AllParameterNullException e) {}
+	}
 	
 }
