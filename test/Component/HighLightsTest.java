@@ -3,11 +3,16 @@ package test.Component;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.Enumeration;
+
 import javax.swing.JLayeredPane;
 
 import org.junit.Test;
 
 import src.Component.HighLights;
+import src.Component.SpinedLabel;
 
 
 public class HighLightsTest {
@@ -83,4 +88,21 @@ public class HighLightsTest {
 		assertNotNull(highLights);
 	}
 
+	/**
+	 * Purpose: hideAllLabel
+	 * Input: hideAllLabel()
+	 * Expected:
+	 * 		return failure
+	 * 		I can't touch the key that in the hideAllLabel function so it's failure
+	 * 		
+	 */
+	@Test
+	public void testhideAllLabel() {
+		highLights = new HighLights();
+		highLights.hideAllLabel();
+		assertNotNull(highLights);
+	}
+	
+	
+	
 }
