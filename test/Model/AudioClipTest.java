@@ -26,7 +26,7 @@ public class AudioClipTest {
 	 * True 
 	 */
 	@Test
-	public void testGetSpineTime() {
+	public void testGetSpine2Time() {
 		assertTrue(audioClip.getSpine2time() instanceof Hashtable);
 	}
 
