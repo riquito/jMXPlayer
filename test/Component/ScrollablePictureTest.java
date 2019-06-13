@@ -1,5 +1,6 @@
 package test.Component;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
@@ -21,7 +22,7 @@ public class ScrollablePictureTest {
 	ScrollablePicture scrollablePicture;
 	/**
 	 * Purpose: make ScrollablePicture
-	 * Input: 
+	 * Input: ScrollablePicture()
 	 * Expected: not Null
 	 * 		return SUCCESS
 	 * 		scrollablePicture -> not null
@@ -38,7 +39,7 @@ public class ScrollablePictureTest {
 	
 	/**
 	 * Purpose: mouseMoved event
-	 * Input: 
+	 * Input: mouseMoved()
 	 * Expected: not Null
 	 * 		return SUCCESS
 	 * 		scrollablePicture -> not null
@@ -55,7 +56,7 @@ public class ScrollablePictureTest {
 
 	/**
 	 * Purpose: mouseDragged event
-	 * Input: 
+	 * Input: mouseDragged()
 	 * Expected: 
 	 * 		return Failure
 	 * 		I can't control scrollRectToVisible function that in the mouseDragged().
@@ -68,6 +69,24 @@ public class ScrollablePictureTest {
 
 		assertNotNull(scrollablePicture);
 	}
+	
+	/**
+	 * Purpose: get Preferred Size
+	 * Input: getPreferredSize()
+	 * Expected: 
+	 * 		return Success
+	 * 		getPreferredSize() == new Dimension(320, 480)
+	 */
+	@Test
+	public void testgetPreferredSize() {
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+
+		assertEquals(scrollablePicture.getPreferredSize(), new Dimension(320, 480));
+	}
+	
+
+	
+	
 	
 	
 }
