@@ -2,6 +2,8 @@ package test.Component;
 
 import static org.junit.Assert.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 
 import org.junit.Test;
@@ -95,5 +97,26 @@ public class ToggleButtonTest {
 		JToggleButton toggleButton = new ToggleButton.Builder().enable(true).build(); 
 		assertTrue(toggleButton.isEnabled());
 	}
-
+	
+	/**
+	 * Purpose: create Toggle Button with actionListener  
+	 * Input: actionListener
+	 * Expected: equal to JToggleButton with empty text, empty icon, 
+	 * doesn't selected, doesn't enable, actionListener
+	 *
+	 * return SUCCESS
+	 * 
+	 * equal 
+	 */
+	@Test
+	public void testCreateWithActionListenerToggleButton() {
+		ActionListener listener = new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+			}
+		};
+		
+		JToggleButton toggleButton = new ToggleButton.Builder().actionListener(listener).build();
+		
+		assertEquals(toggleButton.getActionListeners()[0], listener);
+	}
 }
