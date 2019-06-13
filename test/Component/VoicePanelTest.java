@@ -38,5 +38,24 @@ public class VoicePanelTest {
 		assertEquals(checkVisible, voicepanel.isVisible());
 	}
 	
+	/**
+	 * Purpose: set Voice Dictionary
+	 * Input: setVoiceDictionary set voicepanel with checkDictionary
+	 * Expected:
+	 * 		return SUCCESS
+	 * 		voicepanel.setVoiceDictionary(checkDictionary) == NULL
+	 * 
+	 * NULL 
+	 */
+	@Test
+	public void testsetVoiceDictionary() {
+		Hashtable<String, Voice> checkDictionary = null; 
+		voicepanel = new VoicesPanel();
+		voicepanel.setVoiceDictionary(checkDictionary);
+		assertNotNull(voicepanel);
+
+	}
+	
+	
 	
 }
