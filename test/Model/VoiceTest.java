@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import src.Model.Voice;
+import src.Util.CustomColor;
 
 public class VoiceTest {
 	Voice voice;
@@ -75,6 +76,22 @@ public class VoiceTest {
 	@Test
 	public void testGetColor() {
 		assertTrue(voice.getColor() instanceof Color);
+	}
+	
+	/**
+	 * Purpose: set color of voice  
+	 * Input: CustomColor.getNextColor()
+	 * Expected: CustomColor.getNextColor() -> color of voice
+	 *
+	 * return SUCCESS
+	 * 
+	 * CustomColor.getNextColor() -> color of voice
+	 */
+	@Test
+	public void testSetColor() {
+		Color color = CustomColor.getNextColor();
+		voice.setColor(color);
+		assertEquals(color, voice.getColor());
 	}
 
 	
