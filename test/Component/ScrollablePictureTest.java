@@ -98,6 +98,19 @@ public class ScrollablePictureTest {
 		assertEquals(scrollablePicture.getPreferredScrollableViewportSize(), new Dimension(320, 480));
 	}
 	
+	/**
+	 * Purpose: get Scrollable Tracks View port Width
+	 * Input: getScrollableTracksViewportWidth()
+	 * Expected: 
+	 * 		return Success
+	 * 		getScrollableTracksViewportWidth() == false
+	 */
+	@Test
+	public void testgetScrollableTracksViewportWidth() {
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+		
+		assertEquals(scrollablePicture.getScrollableTracksViewportWidth(), false);
+	}
 	
 	
 	
