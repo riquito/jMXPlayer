@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.junit.Test;
 import org.junit.Before;
 
+import src.Model.GraphicInstance;
 import src.Model.GraphicInstanceGroup;
 
 public class GraphicInstanceGroupTest {
@@ -95,6 +96,33 @@ public class GraphicInstanceGroupTest {
 		assertTrue(group.getInstances() instanceof Vector);
 	}
 	
+	/**
+	 * Purpose: add graphic instances 3 times at GraphicInstanceGroup  
+	 * Input: new GraphicInstance 3 times
+	 * Expected: Equals
+	 *
+	 * return SUCCESS
+	 * 
+	 * instance * 11 -> GraphicInstanceGroup.instances
+	 * size of instances is equal 20 
+	 * Equals
+	 */
+	@Test
+	public void testAddInstance() {
+		group.addInstance(new GraphicInstance());	
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		group.addInstance(new GraphicInstance());
+		
+		assertEquals(11, group.getInstances().size());
+	}
 	
 
 }
