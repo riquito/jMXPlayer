@@ -64,6 +64,7 @@ public class ImageCanvasTest {
 	@Test
 	public void testaddCanvasResizeEventListener() {
 		CanvasResizedListener listener = null;
+		imageCanvas = new ImageCanvas();
 		imageCanvas.addCanvasResizeEventListener(listener);
 		assertNotNull(imageCanvas);
 	}
