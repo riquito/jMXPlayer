@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 import org.junit.Test;
 
@@ -140,6 +141,26 @@ public class ScrollablePictureTest {
 		scrollablePicture.setMaxUnitIncrement(1);
 		assertNotNull(scrollablePicture);
 	}
+	
+	/**
+	 * Purpose: get Scrollable Block Increment
+	 * Input: getScrollableBlockIncrement()
+	 * Expected: 
+	 * 		return Failure
+	 * 		I can't control SwingConstants.HORIZONTAL
+	 */
+	@Test
+	public void testgetScrollableBlockIncrement() {
+		
+		Rectangle rectangle = new Rectangle(1, 1, 1, 1);
+		int orientation=1; 
+		int direction=1;
+		
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+		
+		assertEquals(scrollablePicture.getScrollableBlockIncrement(rectangle, orientation, direction), 0);
+	}
+	
 	
 	
 }
