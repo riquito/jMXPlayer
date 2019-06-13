@@ -47,6 +47,21 @@ public class AudioClipTest {
 		audioClip.addSpineTime(spine, time);
 		assertNotNull(audioClip.getSpine2time().containsKey(spine));
 	}
+	
+	/**
+	 * Purpose: check getTime2Spine() is instance of Hashtable 
+	 * Input:
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * check getTime2Spine() is instance of Hashtable
+	 * True 
+	 */
+	@Test
+	public void testGetTime2Spine() {
+		assertTrue(audioClip.getTime2Spine() instanceof Hashtable);
+	}
 
 
 }
