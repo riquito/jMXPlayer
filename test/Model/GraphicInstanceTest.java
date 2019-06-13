@@ -2,6 +2,9 @@ package test.Model;
 
 import static org.junit.Assert.*;
 
+import java.awt.Rectangle;
+import java.util.Hashtable;
+
 import org.junit.Test;
 import org.junit.Before;
 
@@ -131,5 +134,20 @@ public class GraphicInstanceTest {
 		instance.setTree(newTree);
 		assertEquals(newTree, instance.getTree());
 	}
-
+	
+	/**
+	 * Purpose: Get spine2point at graphic instance 
+	 * Input: 
+	 * Expected: NotNull
+	 *
+	 * return SUCCESS
+	 * 
+	 * Get spine2point at graphic instance
+	 * NotNull
+	 */
+	@Test
+	public void testGetSpine2point() {
+		assertNotNull(instance.getSpine2point());
+	}
+	
 }
