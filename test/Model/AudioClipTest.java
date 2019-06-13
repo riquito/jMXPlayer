@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.Hashtable;
 import src.Model.AudioClip;
+import src.Model.Tree;
 
 public class AudioClipTest {
 	AudioClip audioClip;
@@ -61,6 +62,21 @@ public class AudioClipTest {
 	@Test
 	public void testGetTime2Spine() {
 		assertTrue(audioClip.getTime2Spine() instanceof Hashtable);
+	}
+	
+	/**
+	 * Purpose: check getTimeRBTree() is instance of Tree 
+	 * Input:
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * check getTimeRBTree() is instance of Tree
+	 * True 
+	 */
+	@Test
+	public void testGetTimeRBTree() {
+		assertTrue(audioClip.getTimeRBTree() instanceof Tree);
 	}
 
 
