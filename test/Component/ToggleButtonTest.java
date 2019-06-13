@@ -79,5 +79,21 @@ public class ToggleButtonTest {
 		JToggleButton toggleButton = new ToggleButton.Builder().select(true).build(); 
 		assertTrue(toggleButton.isSelected());
 	}
+	
+	/**
+	 * Purpose: create Toggle Button with enabled  
+	 * Input: enable = true
+	 * Expected: equal to JToggleButton with empty text, empty icon, 
+	 * doesn't selected, enable, no actionListener
+	 *
+	 * return SUCCESS
+	 * 
+	 * equal 
+	 */
+	@Test
+	public void testCreateWithEnabledToggleButton() {
+		JToggleButton toggleButton = new ToggleButton.Builder().enable(true).build(); 
+		assertTrue(toggleButton.isEnabled());
+	}
 
 }
