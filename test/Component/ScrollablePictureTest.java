@@ -3,6 +3,8 @@ package test.Component;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
@@ -50,5 +52,22 @@ public class ScrollablePictureTest {
 
 		assertNotNull(scrollablePicture);
 	}
+
+	/**
+	 * Purpose: mouseDragged event
+	 * Input: 
+	 * Expected: 
+	 * 		return Failure
+	 * 		I can't control scrollRectToVisible function that in the mouseDragged().
+	 */
+	@Test
+	public void testmouseDragged() {
+		MouseEvent event = null;
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+		scrollablePicture.mouseDragged(event);
+
+		assertNotNull(scrollablePicture);
+	}
+	
 	
 }
