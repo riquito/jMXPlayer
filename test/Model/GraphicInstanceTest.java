@@ -97,5 +97,20 @@ public class GraphicInstanceTest {
 		instance.setRelativeImagePath(relativeImagePath);
 		assertNotNull(instance.getImagePath());
 	}
+	
+	/**
+	 * Purpose: Get Tree at graphic instance 
+	 * Input: 
+	 * Expected: NotNull
+	 *
+	 * return SUCCESS
+	 * 
+	 * Get Tree at graphic instance
+	 * NotNull
+	 */
+	@Test
+	public void testGetTree() {
+		assertNotNull(instance.getTree());
+	}
 
 }
