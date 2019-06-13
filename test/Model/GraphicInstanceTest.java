@@ -167,4 +167,19 @@ public class GraphicInstanceTest {
 		assertEquals(newHashtable, instance.getSpine2point());
 	}
 
+	/**
+	 * Purpose: Get spineStart at graphic instance 
+	 * Input: 
+	 * Expected: Null (initialize)
+	 *
+	 * return SUCCESS
+	 * 
+	 * Get spineStart at graphic instance
+	 * Null
+	 */
+	@Test
+	public void testGeSpineStart() {
+		assertNull(instance.getSpineStart());
+	}
+	
 }
