@@ -36,4 +36,18 @@ public class HighLightsTest {
 		highLights.setXAdjust(1);
 		assertEquals(1, highLights.getXAdjust());
 	}
+	
+	/**
+	 * Purpose: setYAdjust getYAdjust
+	 * Input: setYAdjust -> 1
+	 * Expected: getYAdjust == 1
+	 * 		return SUCCESS
+	 * 		
+	 */
+	@Test
+	public void testsetgetYAdjust() {
+		highLights = new HighLights();
+		highLights.setYAdjust(1);
+		assertEquals(1, highLights.getYAdjust());
+	}
 }
