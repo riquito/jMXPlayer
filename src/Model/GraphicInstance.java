@@ -22,8 +22,16 @@ public class GraphicInstance {
 		this.basePath = imagePath;
 	}
 	
+	public String getBasePath() {
+		return this.basePath;
+	}
+	
 	public void setRelativeImagePath(String relativeImagePath) {
 		this.relativeImagePath = relativeImagePath;
+	}
+	
+	public String getRelativeImagePath() {
+		return this.relativeImagePath;
 	}
 
 	public String getImagePath(){
