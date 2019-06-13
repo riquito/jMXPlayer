@@ -78,5 +78,24 @@ public class GraphicInstanceTest {
 		instance.setRelativeImagePath(relativeImagePath);
 		assertEquals(relativeImagePath, instance.getRelativeImagePath());
 	}
+	
+	/**
+	 * Purpose: Get Image path at graphic instance 
+	 * Input: 
+	 * Expected: NotNull
+	 *
+	 * return SUCCESS
+	 * 
+	 * set relative path at graphic instance
+	 * NotNull
+	 */
+	@Test
+	public void testGetImagePath() {
+		String basePath = "http://jjalbang.today";
+		instance.setBasePath(basePath);
+		String relativeImagePath = "jj237.jpg";
+		instance.setRelativeImagePath(relativeImagePath);
+		assertNotNull(instance.getImagePath());
+	}
 
 }
