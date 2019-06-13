@@ -150,4 +150,21 @@ public class GraphicInstanceTest {
 		assertNotNull(instance.getSpine2point());
 	}
 	
+	/**
+	 * Purpose: Set spine2point at graphic instance 
+	 * Input: new Hashtable -> instance.spine2point
+	 * Expected: Equals
+	 *
+	 * return SUCCESS
+	 * 
+	 * new Hashtable -> instance.tree
+	 * Equals
+	 */
+	@Test
+	public void testSetSpine2pointTree() {
+		Hashtable<String, Rectangle> newHashtable = new Hashtable();
+		instance.setSpine2point(newHashtable);
+		assertEquals(newHashtable, instance.getSpine2point());
+	}
+
 }
