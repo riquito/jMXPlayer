@@ -127,5 +127,19 @@ public class ScrollablePictureTest {
 		assertEquals(scrollablePicture.getScrollableTracksViewportHeight(), false);
 	}
 	
+	/**
+	 * Purpose: set Max Unit Increment
+	 * Input: setMaxUnitIncrement()
+	 * Expected: 
+	 * 		return Success
+	 * 		scrollablePicture -> not null
+	 */
+	@Test
+	public void testsetMaxUnitIncrement() {
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+		scrollablePicture.setMaxUnitIncrement(1);
+		assertNotNull(scrollablePicture);
+	}
+	
 	
 }
