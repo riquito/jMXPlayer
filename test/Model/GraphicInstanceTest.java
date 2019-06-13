@@ -184,7 +184,7 @@ public class GraphicInstanceTest {
 	
 	/**
 	 * Purpose: Set spineStart at graphic instance 
-	 * Input: new RTree -> instance.spineStart
+	 * Input: new spineStart -> instance.spineStart
 	 * Expected: Equals
 	 *
 	 * return SUCCESS
@@ -198,4 +198,5 @@ public class GraphicInstanceTest {
 		instance.setSpineStart(spineStart);
 		assertEquals(spineStart, instance.getSpineStart());
 	}
+	
 }
