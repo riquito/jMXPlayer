@@ -96,5 +96,24 @@ public class AudioClipTest {
 		audioClip.setTimeRBTree(tree);
 		assertEquals(audioClip.getTimeRBTree(), tree);
 	}
+	
+	/**
+	 * Purpose: get Spine matched time <add (spine = "abcd" : time = "30") key value>
+	 * Input: time = "30"
+	 * Expected: NotNull
+	 *
+	 * return SUCCESS
+	 * 
+	 * add (spine = "abcd" : time = "30") key value
+	 * getSpine matched time
+	 * NotNull 
+	 */
+	@Test
+	public void testGetSpine() {
+		String spine = "abcd";
+		int time = 30;
+		audioClip.addSpineTime(spine, time);
+		assertNotNull(audioClip.getSpines(time));
+	}
 
 }
