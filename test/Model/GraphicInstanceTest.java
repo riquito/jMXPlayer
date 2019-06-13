@@ -214,4 +214,20 @@ public class GraphicInstanceTest {
 		assertNull(instance.getSpineEnd());
 	}
 	
+	/**
+	 * Purpose: Set spineEnd at graphic instance 
+	 * Input: new spineEnd -> instance.spineEnd
+	 * Expected: Equals
+	 *
+	 * return SUCCESS
+	 * 
+	 * new spineEnd -> instance.spineEnd
+	 * Equals
+	 */
+	@Test
+	public void testSetSpineEnd() {
+		String spineEnd= "abcd";
+		instance.setSpineEnd(spineEnd);
+		assertEquals(spineEnd, instance.getSpineEnd());
+	}
 }
