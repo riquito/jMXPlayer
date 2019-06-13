@@ -28,5 +28,20 @@ public class GraphicInstanceGroupTest {
 	public void testGetDescription() {
 		assertEquals(group.getDescription(), description);
 	}
+	
+	/**
+	 * Purpose: get graphic instance group size  
+	 * Input:
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * getGroupSize is equal to 0 (initialize)
+	 * True 
+	 */
+	@Test
+	public void testGetGroupSize() {
+		assertEquals(group.getGroupSize(), 0);
+	}
 
 }
