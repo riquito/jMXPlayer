@@ -30,5 +30,19 @@ public class GraphicInstanceTest {
 		assertNull(instance.getBasePath());
 	}
 	
+	/**
+	 * Purpose: get relative path at graphic instance 
+	 * Input:
+	 * Expected: null (initialize)
+	 *
+	 * return SUCCESS
+	 * 
+	 * get relative path at graphic instance
+	 * null
+	 */
+	@Test
+	public void testGetRelativePath() {
+		assertNull(instance.getRelativeImagePath());
+	}
 
 }
