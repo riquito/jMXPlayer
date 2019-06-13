@@ -73,5 +73,22 @@ public class VoicePanelTest {
 		assertNotNull(voicepanel);
 	}
 	
+	/**
+	 * Purpose: action when event
+	 * Input: 
+	 * Expected:
+	 * 		return fail
+	 * 		I can't test changeVoiceVisiblityOnCheckbox function because it is private
+	 * 
+	 * 
+	 */
+	@Test
+	public void testactionPerformed() {
+		ActionListener listener = new ActionListener() {
+			public void actionPerformed(ActionEvent event) {}
+		};
+
+	}
+	
 	
 }
