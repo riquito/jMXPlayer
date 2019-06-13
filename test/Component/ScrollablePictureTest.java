@@ -113,5 +113,19 @@ public class ScrollablePictureTest {
 	}
 	
 	
+	/**
+	 * Purpose: get Scrollable Tracks View port Height
+	 * Input: getScrollableTracksViewportHeight()
+	 * Expected: 
+	 * 		return Success
+	 * 		getScrollableTracksViewportHeight() == false
+	 */
+	@Test
+	public void testgetScrollableTracksViewportHeight() {
+		scrollablePicture = new ScrollablePicture(icon, maxUnitIncrement);
+		
+		assertEquals(scrollablePicture.getScrollableTracksViewportHeight(), false);
+	}
+	
 	
 }
