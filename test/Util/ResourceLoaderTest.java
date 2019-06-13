@@ -39,4 +39,20 @@ public class ResourceLoaderTest {
 		assertEquals(new URL("http://jjalbang.today/jj237.jpg"),
 				ResourceLoader.getResourceUrl("http://jjalbang.today/jj237.jpg", ""));
 	}
+	
+	/**
+	 * Purpose: get relative path resource url  
+	 * Input: "http://jjalbang.today", "jj237.jpg"
+	 * Expected: URL("http://jjalbang.today/jj237.jpg")
+	 *
+	 * return SUCCESS
+	 * 
+	 * "http://jjalbang.today", "jj237.jpg" => URL("http://jjalbang.today/jj237.jpg")
+	 */
+	@Test
+	public void resourceLoaderTestWithRelativePath() throws MalformedURLException {
+		ResourceLoader.setStrategy(new LoadFromRelativePath());
+		assertEquals(new URL("http://jjalbang.today/jj237.jpg"),
+				ResourceLoader.getResourceUrl("http://jjalbang.today", "jj237.jpg"));
+	}
 }
