@@ -56,6 +56,22 @@ public class VoicePanelTest {
 
 	}
 	
+	/**
+	 * Purpose: change Voice Visibility with populate
+	 * Input: populate -> voiceDictionary
+	 * Expected:
+	 * 		return SUCCESS
+	 * 		voicepanel == NULL
+	 * 
+	 * NULL 
+	 */
+	@Test
+	public void testpopulate() {
+		voiceDictionary.put(test, voice);
+		voicepanel = new VoicesPanel();
+		voicepanel.populate(voiceDictionary);
+		assertNotNull(voicepanel);
+	}
 	
 	
 }
