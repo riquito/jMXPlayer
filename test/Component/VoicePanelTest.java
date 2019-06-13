@@ -90,5 +90,21 @@ public class VoicePanelTest {
 
 	}
 	
+	/**
+	 * Purpose: change Voice Visiblity On Checkbox
+	 * Input: 
+	 * Expected:
+	 * 		return fail
+	 * 		I can't test changeVoiceVisiblityOnCheckbox function because it is private
+	 * 
+	 * 
+	 */
+	@Test
+	public void testchangeVoiceVisiblityOnCheckbox() {
+		voicepanel = new VoicesPanel();
+		
+	}
+	
+	
 	
 }
