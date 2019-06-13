@@ -1,6 +1,9 @@
 package test.Model;
 
 import static org.junit.Assert.*;
+
+import java.util.Vector;
+
 import org.junit.Test;
 import org.junit.Before;
 
@@ -76,5 +79,22 @@ public class GraphicInstanceGroupTest {
 		group.setGroupSize(4);
 		assertEquals(group.getGroupSize(), 4);
 	}
+	
+	/**
+	 * Purpose: get instances from GraphicInstanceGroup  
+	 * Input: 
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * instances is instanceof Vector
+	 * True 
+	 */
+	@Test
+	public void testGetInstance() {
+		assertTrue(group.getInstances() instanceof Vector);
+	}
+	
+	
 
 }
