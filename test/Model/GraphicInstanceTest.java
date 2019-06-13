@@ -199,4 +199,19 @@ public class GraphicInstanceTest {
 		assertEquals(spineStart, instance.getSpineStart());
 	}
 	
+	/**
+	 * Purpose: Get spineEnd at graphic instance 
+	 * Input: 
+	 * Expected: Null (initialize)
+	 *
+	 * return SUCCESS
+	 * 
+	 * Get spineEnd at graphic instance
+	 * Null
+	 */
+	@Test
+	public void testGeSpineEnd() {
+		assertNull(instance.getSpineEnd());
+	}
+	
 }
