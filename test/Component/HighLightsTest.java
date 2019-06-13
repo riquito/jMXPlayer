@@ -50,4 +50,19 @@ public class HighLightsTest {
 		highLights.setYAdjust(1);
 		assertEquals(1, highLights.getYAdjust());
 	}
+	
+	/**
+	 * Purpose: setScaling getScaling
+	 * Input: setScaling -> 1.1
+	 * Expected: getScaling == 1.1
+	 * 		return SUCCESS
+	 * 		
+	 */
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testsetgetScaling() {
+		highLights = new HighLights();
+		highLights.setScaling(1.1);
+		assertEquals(1.1, highLights.getScaling(), 1.1);
+	}
 }
