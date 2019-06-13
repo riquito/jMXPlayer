@@ -31,5 +31,21 @@ public class VoiceTest {
 		voice.setVisible(changedVisible);
 		assertEquals(changedVisible, voice.isVisible());
 	}
+	
+	/**
+	 * Purpose: get name of voice  
+	 * Input: 
+	 * Expected: hello
+	 *
+	 * return SUCCESS
+	 * 
+	 * hello
+	 */
+	@Test
+	public void testGetName() {
+		assertEquals(voiceName, voice.getName());
+	}
 
+
+	
 }
