@@ -8,6 +8,19 @@ import src.Util.RectangleExtension;
 import java.awt.Rectangle;
 
 public class RectangleExtensionTest {
+	int x, y, width, height, ratio;
+	Rectangle rectangle;
+	
+	@Before
+	public void setUpRectangleAndFeature() {
+		x = 3;
+		y = 3; 
+		width = 5;
+		height = 8;
+		ratio = 9;
+		
+		rectangle = new Rectangle(x, y, width, height);
+	}
 
 	/**
 	 * Purpose: change rectangle's scale with ratio 
@@ -21,9 +34,6 @@ public class RectangleExtensionTest {
 	 */
 	@Test
 	public void rectangleScaleUpTest() {
-		int x = 3, y = 3, width = 5, height = 8, ratio = 9;
-
-		Rectangle rectangle = new Rectangle(x, y, width, height);
 		Rectangle scaleUpRectangle = RectangleExtension.scale(rectangle, ratio);
 		assertTrue((scaleUpRectangle.x == x * ratio) && (scaleUpRectangle.y == y * ratio)
 				&& (scaleUpRectangle.width == width * ratio) && (scaleUpRectangle.height == height * ratio));
