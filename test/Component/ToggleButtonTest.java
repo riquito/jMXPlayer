@@ -21,5 +21,22 @@ public class ToggleButtonTest {
 	public void testCreateSimpleToggleButton() {
 		assertTrue(new ToggleButton.Builder().build() instanceof JToggleButton);
 	}
+	
+	/**
+	 * Purpose: create Toggle Button with text  
+	 * Input: text = hello
+	 * Expected: equal to JToggleButton with "hello" text, no icon, 
+	 * doesn't selected, doesn't enable, no actionListener
+	 *
+	 * return SUCCESS
+	 * 
+	 * equal 
+	 */
+	@Test
+	public void testCreateWithTextToggleButton() {
+		String text = "hello";
+		JToggleButton toggleButton = new ToggleButton.Builder().text(text).build(); 
+		assertEquals(toggleButton.getText(), text);
+	}
 
 }
