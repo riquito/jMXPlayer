@@ -45,4 +45,22 @@ public class GraphicInstanceTest {
 		assertNull(instance.getRelativeImagePath());
 	}
 
+	/**
+	 * Purpose: Set base path at graphic instance 
+	 * Input: "http://jjalbang.today"
+	 * Expected: Equals
+	 *
+	 * return SUCCESS
+	 * 
+	 * set base path at graphic instance
+	 * Equals
+	 */
+	@Test
+	public void testSetBasePath() {
+		String basePath = "http://jjalbang.today";
+		instance.setBasePath(basePath);
+		assertEquals(basePath, instance.getBasePath());
+	}
+	
+
 }
