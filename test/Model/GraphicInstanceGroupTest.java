@@ -60,5 +60,21 @@ public class GraphicInstanceGroupTest {
 	public void testGetGroupSize() {
 		assertEquals(group.getGroupSize(), 0);
 	}
+	
+	/**
+	 * Purpose: set graphic instance group size  
+	 * Input: size -> 4
+	 * Expected: True
+	 *
+	 * return SUCCESS
+	 * 
+	 * set GroupSize 4
+	 * True 
+	 */
+	@Test
+	public void testSetGroupSize() {
+		group.setGroupSize(4);
+		assertEquals(group.getGroupSize(), 4);
+	}
 
 }
